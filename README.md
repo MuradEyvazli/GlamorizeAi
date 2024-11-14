@@ -1,4 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Glamorize AI - Your Virtual Try-On Experience
+
+Welcome to **Glamorize AI** – an innovative platform where style meets technology. Designed to offer a personalized fashion experience, Glamorize AI empowers users to virtually try on clothes, explore styling options, and plan outfits from anywhere.
+
+## Key Features
+- **Virtual Try-On**: Upload your own photos or use a mannequin to see how selected outfits fit and look on you.
+- **Login Register**:Y
+- **Subscription Plans**: Choose from various plans to unlock advanced features and exclusive content. Manage your subscription directly from your account.
+- **Balance Tracking**: Each user account comes with a balance, allowing users to manage transactions and access premium functionalities.
+- **Seamless Navigation**: Enjoy a clean, responsive, and user-friendly interface that adapts smoothly across devices.
+
+> Note: The AI-powered feedback feature is currently under development and will be available in future updates. Stay tuned as we work to deliver an AI experience that provides personalized fashion insights and style suggestions.
+
+---
+
+Did you know? Virtual try-on technology not only saves time but can reduce the environmental impact by lowering return rates and minimizing wasted materials in retail.
+
 
 ## Getting Started
 
