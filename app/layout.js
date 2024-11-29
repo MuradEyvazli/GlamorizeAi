@@ -3,6 +3,7 @@ import "./globals.css";
 import Footer from "../components/Footer";
 import { AuthProvider } from "./Providers";
 import Navbar from "@/components/Navbar";
+import FakeNavbar from "@/components/FakeNavbar";
 import { usePathname } from 'next/navigation';
 
 export default function RootLayout({ children }) {

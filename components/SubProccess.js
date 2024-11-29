@@ -80,7 +80,7 @@ const SubProcess = () => {
   }
 
   return (
-    <div id="plan" className="bg-white w-full py-12 relative " style={{ backgroundImage: "url('/images/sal.jpg')" }}>
+    <div id="plan" className="bg-white w-full py-12 relative " style={{ backgroundImage: "url('/images/Cyc.jpg')" }}>
       <div className="text-center mb-8">
         <h2 className="text-3xl font-semibold text-gray-100">
           {userSubscription ? "Your Subscription.." : "Choose your preferred plan"}
@@ -94,7 +94,7 @@ const SubProcess = () => {
             <div className="inline-flex rounded-lg overflow-hidden mt-6">
               <button
                 className={`px-6 py-2 font-medium text-sm ${
-                  billingPeriod === 'monthly' ? 'bg-red-100 text-red-500' : 'bg-white text-gray-700'
+                  billingPeriod === 'monthly' ? 'bg-gray-100 text-gray-500' : 'bg-white text-gray-700'
                 }`}
                 onClick={() => handleBillingToggle('monthly')}
               >
@@ -136,7 +136,7 @@ const SubProcess = () => {
                   </span>
                 </div>
                 <p className="text-sm text-gray-500 mt-2">Credits per month: {plan.creditspermonth}</p>
-                <button className="cursor-pointer mt-6 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                <button className="cursor-pointer mt-6 w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-gray-900 transition duration-300">
                   Choose
                 </button>
               </div>

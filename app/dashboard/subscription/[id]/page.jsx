@@ -72,7 +72,7 @@ const Subscription = () => {
   if (!subscription) return <p>Subscription not found</p>;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center items-center" style={{ backgroundImage: "url('/images/sal.jpg')" }}>
+    <div className="min-h-screen bg-gray-50 flex justify-center items-center" style={{ backgroundImage: "url('/images/Cyc.jpg')" }}>
       <div className="max-w-2xl mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-lg shadow-lg p-16 ">
         <button
           onClick={() => router.back()}
