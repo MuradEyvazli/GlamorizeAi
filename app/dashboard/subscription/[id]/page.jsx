@@ -72,11 +72,18 @@ const Subscription = () => {
   if (!subscription) return <p>Subscription not found</p>;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center items-center" style={{ backgroundImage: "url('/images/Cyc.jpg')" }}>
-      <div className="max-w-2xl mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-lg shadow-lg p-16 ">
+    <div 
+      className="min-h-screen bg-gray-50 flex justify-center items-center"
+      style={{
+        backgroundImage: "url('/images/Cyc.jpg')",
+        backgroundSize: "cover", 
+        backgroundRepeat: "no-repeat" // Tekrar etmesini önler
+      }}
+    >
+      <div className="max-w-2xl mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-lg shadow-lg p-16">
         <button
           onClick={() => router.back()}
-          className="mb-4 bg-gradient-to-br from-pur-600 via-gray-700 to-blue-400 text-white py-2 px-7 rounded-lg hover:bg-gray-400 transition duration-300"
+          className="mb-4 bg-gradient-to-br from-purple-600 via-gray-700 to-blue-400 text-white py-2 px-7 rounded-lg hover:bg-gray-400 transition duration-300"
         >
           Back
         </button>

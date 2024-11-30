@@ -80,7 +80,7 @@ const SubProcess = () => {
   }
 
   return (
-    <div id="plan" className="bg-white w-full py-12 relative " style={{ backgroundImage: "url('/images/Cyc.jpg')" }}>
+    <div id="plan" className="bg-white w-full py-12 relative " style={{ backgroundImage: "url('/images/Cyc.jpg')", backgroundSize: 'cover',backgroundRepeat: "no-repeat" }}>
       <div className="text-center mb-8">
         <h2 className="text-3xl font-semibold text-gray-100">
           {userSubscription ? "Your Subscription.." : "Choose your preferred plan"}
