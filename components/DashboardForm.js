@@ -22,8 +22,8 @@ const DashboardForm = () => {
   };
 
   return (
-    <div className="fullscreen bg-cover bg-center ">
-      <div className="bg-white bg-opacity-80 max-w-7xl mx-auto px-6 py-10 rounded-lg" >
+    <div id='home' className="bg-white">
+      <div className="mx-auto px-6 py-10 rounded-lg" >
         <h1 className="text-2xl font-semibold text-center mb-10">
           Glamorize AI-Dashboard
         </h1>

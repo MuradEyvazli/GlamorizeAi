@@ -3,7 +3,7 @@ import React from 'react';
 
 const InfoPage = () => {
   return (
-    <div className="bg-blue-50 w-full py-12" id='about' >
+    <div className="bg-gradient-to-r from-[#ffffff] to-[#ffffff] w-full py-12" id='about' >
       <div className="text-center mb-10">
         <h2 className="text-2xl font-semibold text-gray-800">
           <span className='bg-gradient-to-r from-[#66c1f6] to-[#5a5ede] text-transparent bg-clip-text'>Glamorize</span> your perfect photoshoots with just a few clicks

@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import FakeNavbar from "@/components/FakeNavbar";
 import { usePathname } from 'next/navigation';
 
+
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
