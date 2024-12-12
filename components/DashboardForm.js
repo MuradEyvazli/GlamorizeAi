@@ -115,29 +115,104 @@ const DashboardForm = () => {
     }
   };
 
+  const handleExampleClick = (imageUrl, setImage) => {
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const file = new File([blob], 'example.jpg', { type: blob.type });
+        setImage(file);
+      })
+      .catch((error) => console.error('Error loading example image:', error));
+  };
+
   return (
-    <div className="min-h-screen   flex flex-col items-center justify-center">
-      <div className="w-full max-w-7xl px-8 py-16">
-        <h1 className="text-5xl font-bold text-center mb-12 text-gray-900">
-          Glamorize{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-            AI
-          </span>{' '}
-          Dashboard
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col items-center justify-center">
+      <div className="w-full max-w-screen-xl px-8 py-16">
+        <h1 className="text-5xl font-extrabold text-center mb-16 mt-5 hover:text-blue-500 transition">
+          Glamorize-AI Creative Studio
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
-          <div className="bg-gray-50 border border-gray-200 shadow-lg rounded-lg p-10">
-            <h2 className="text-2xl font-semibold text-center mb-6">Step 1. Upload a Person Image</h2>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg h-[450px]  flex items-center justify-center mb-6">
+        <div className="grid grid-cols-3 gap-8 mb-16">
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+            <h2 className="text-2xl font-bold mb-4">AI Images</h2>
+            <p className="text-gray-400">Powered by Kolors</p>
+            <button className="mt-6 bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">
+              Explore
+            </button>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+            <h2 className="text-2xl font-bold mb-4">AI Videos</h2>
+            <p className="text-gray-400">Powered by KLING</p>
+            <button className="mt-6 bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">
+              Explore
+            </button>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+            <h2 className="text-2xl font-bold mb-4">Video Editor</h2>
+            <p className="text-gray-400">Coming Soon</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-12">
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+            <h3 className="text-xl font-semibold mb-4">Example Person Images</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <img
+                src="/humans/000.png"
+                alt="Example 1"
+                className="h-36 object-cover rounded-md cursor-pointer"
+                onClick={() => handleExampleClick('/humans/000.png', setSelectedPersonImage)}
+              />
+              <img
+                src="/humans/001.png"
+                alt="Example 2"
+                className="h-36 object-cover rounded-md cursor-pointer"
+                onClick={() => handleExampleClick('/humans/001.png', setSelectedPersonImage)}
+              />
+              <img
+                src="/humans/002.png"
+                alt="Example 3"
+                className="h-36 object-cover rounded-md cursor-pointer"
+                onClick={() => handleExampleClick('/humans/002.png', setSelectedPersonImage)}
+              />
+            </div>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+            <h3 className="text-xl font-semibold mb-4">Example Garment Images</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <img
+                src="/cloth/00_upper.jpg"
+                alt="Example 1"
+                className="h-36 object-cover rounded-md cursor-pointer"
+                onClick={() => handleExampleClick('/cloth/00_upper.jpg', setSelectedGarmentImage)}
+              />
+              <img
+                src="/cloth/01_upper.jpg"
+                alt="Example 2"
+                className="h-36 object-cover rounded-md cursor-pointer"
+                onClick={() => handleExampleClick('/cloth/01_upper.jpg', setSelectedGarmentImage)}
+              />
+              <img
+                src="/cloth/02_upper.jpg"
+                alt="Example 3"
+                className="h-36 object-cover rounded-md cursor-pointer"
+                onClick={() => handleExampleClick('/cloth/02_upper.jpg', setSelectedGarmentImage)}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8 mt-16">
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-center mb-8">Step 1. Upload a Person Image</h2>
+            <div className="border-2 border-dashed border-gray-400 rounded-lg h-72 flex items-center justify-center mb-6">
               {selectedPersonImage ? (
-                <img
-                  src={URL.createObjectURL(selectedPersonImage)}
-                  alt="Selected Person"
-                  className="h-full object-contain rounded-md"
-                />
+                <img src={URL.createObjectURL(selectedPersonImage)} alt="Selected Person" className="h-full object-contain rounded-md" />
               ) : (
-                <p className="text-gray-500 text-lg">Drag & Drop or Click to Upload</p>
+                <p className="text-gray-400">Drag & Drop or Click to Upload</p>
               )}
             </div>
             <input
@@ -149,23 +224,19 @@ const DashboardForm = () => {
             />
             <label
               htmlFor="person-upload"
-              className="block w-full px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md text-center cursor-pointer"
+              className="block w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-md text-white text-center cursor-pointer"
             >
               Choose Image
             </label>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 shadow-lg rounded-lg p-10">
-            <h2 className="text-2xl font-semibold text-center mb-6">Step 2. Upload a Garment Image</h2>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg h-[450px] flex items-center justify-center mb-6">
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-center mb-8">Step 2. Upload a Garment Image</h2>
+            <div className="border-2 border-dashed border-gray-400 rounded-lg h-72 flex items-center justify-center mb-6">
               {selectedGarmentImage ? (
-                <img
-                  src={URL.createObjectURL(selectedGarmentImage)}
-                  alt="Selected Garment"
-                  className="h-full object-contain rounded-md"
-                />
+                <img src={URL.createObjectURL(selectedGarmentImage)} alt="Selected Garment" className="h-full object-contain rounded-md" />
               ) : (
-                <p className="text-gray-500 text-lg">Drag & Drop or Click to Upload</p>
+                <p className="text-gray-400">Drag & Drop or Click to Upload</p>
               )}
             </div>
             <input
@@ -177,39 +248,32 @@ const DashboardForm = () => {
             />
             <label
               htmlFor="garment-upload"
-              className="block w-full px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md text-center cursor-pointer"
+              className="block w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-md text-white text-center cursor-pointer"
             >
               Choose Image
             </label>
           </div>
         </div>
 
-        <div className="bg-gray-50 border border-gray-200 shadow-lg rounded-lg p-8 text-center">
-          <h2 className="text-2xl font-semibold mb-8">Step 3. Press "Run" to Get Try-On Results</h2>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg h-[550px]  flex items-center justify-center mb-6">
+        <div className="bg-gray-800 rounded-lg shadow-lg mt-16 p-6 text-center">
+          <h2 className="text-2xl font-bold mb-8">Get Try-On Results</h2>
+          <div className="border-2 border-dashed border-gray-400 rounded-lg h-72 flex items-center justify-center mb-6">
             {resultImage ? (
               <img src={resultImage} alt="Result" className="h-full object-contain rounded-md" />
             ) : (
-              <p className="text-gray-500 text-lg">Result will appear here</p>
+              <p className="text-gray-400">Results will appear here</p>
             )}
           </div>
           <button
             onClick={handleRunClick}
             disabled={isLoading}
-            className={`w-full px-8 py-4 rounded-lg text-lg font-semibold shadow-md transition-all ${
+            className={`w-full px-6 py-3 rounded-lg font-bold text-lg transition-colors ${
               isLoading
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-500 to-purple-500  text-white hover:scale-105 hover:shadow-xl'
+                ? 'bg-gray-600 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-500 to-green-500 text-white hover:shadow-lg'
             }`}
           >
-            {isLoading ? (
-    <>
-      <span className="loader mr-2 text-white"></span>
-      Processing,Please wait 10-20 seconds...
-    </>
-  ) : (
-    'Run'
-  )}
+            {isLoading ? 'Processing...' : 'Run Try-On'}
           </button>
         </div>
       </div>

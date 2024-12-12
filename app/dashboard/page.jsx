@@ -8,7 +8,7 @@ import ContactUs from '@/components/ContactUs';
 
 export default function Home() {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <DashboardForm />
       <ContactUs/>
       <PreInfoPage/>

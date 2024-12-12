@@ -40,11 +40,11 @@ const SupportChat = () => {
 
   return (
     <div
-      className="fixed bottom-5 right-5 bg-white w-80 h-96 shadow-lg rounded-lg border border-gray-300 flex flex-col"
+      className="fixed bottom-5 right-5 bg-white w-80 h-96 shadow-lg rounded-xl flex flex-col"
       style={{ zIndex: 1000 }}
     >
       {/* Chat Header */}
-      <div className="flex justify-between items-center bg-gradient-to-r from-[#66c1f6] to-[#5a5ede] animate-gradient text-white p-3 rounded-t-lg">
+      <div className="flex justify-between items-center bg-gradient-to-r from-[#2a4d61] to-[#070938] animate-gradient text-white p-3 rounded-t-lg">
         <h1 className="text-lg font-bold">Glamorize Ai(Chat)</h1>
         <button
           onClick={() => setIsOpen(false)}
@@ -92,7 +92,7 @@ const SupportChat = () => {
         />
         <button
           onClick={sendMessage}
-          className="mb-2 bg-gradient-to-r from-[#66c1f6] to-[#5a5ede] animate-gradient text-white px-4 py-2.5 rounded-xl ml-2 hover:bg-blue-700 focus:ring focus:ring-blue-300"
+          className="mb-2 bg-gradient-to-r from-[#2a4d61] to-[#070938] animate-gradient text-white px-4 py-2.5 rounded-xl ml-2 hover:bg-blue-700 focus:ring focus:ring-blue-300"
         >
           Send
         </button>

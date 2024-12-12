@@ -10,8 +10,8 @@ export async function GET(req) {
       return NextResponse.json({ success: false, message: 'Task ID is required.' });
     }
 
-    const ak = '05c5c2d52e5047c0a06dde42cded46c6';
-    const sk = '47f94fe882de4c6fa1399ede10628c9a';
+    const ak = process.env.NEXT_PUBLIC_API_KEY;
+    const sk = process.env.NEXT_PUBLIC_SECRET_KEY;
 
     const JWT_TOKEN = generateJWT(ak, sk);
 

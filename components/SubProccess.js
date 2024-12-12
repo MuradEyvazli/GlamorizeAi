@@ -106,7 +106,7 @@ const SubProcess = () => {
         )}
       </div>
 
-      <div className="grid justify-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4">
+      <div className="grid justify-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-7xl mx-auto px-4">
         {userSubscription ? (
           <div className="flex flex-col justify-center border rounded-lg p-6 bg-white shadow-md min-h-[200px]">
             <h3 className="text-lg font-semibold">{userSubscription.name}</h3>
@@ -136,7 +136,7 @@ const SubProcess = () => {
                   </span>
                 </div>
                 <p className="text-sm text-gray-500 mt-2">Credits per month: {plan.creditspermonth}</p>
-                <button className="cursor-pointer mt-6 w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-gray-900 transition duration-300">
+                <button className="cursor-pointer mt-6 w-full bg-[#000103] text-white py-2 rounded-lg hover:bg-blue-900 transition duration-300">
                   Choose
                 </button>
               </div>

@@ -7,7 +7,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-900 text-white py-10 px-5 md:px-20" >
+    <footer className="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-10 px-5 md:px-20" >
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         
         {/* Logo and Description */}
