@@ -16,7 +16,7 @@ export async function POST(req) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gemini-1.5-flash', // Use the appropriate model name
+      model: 'gemini-1.5-flash',
       messages: [{ role: 'user', content: message }],
     });
 
