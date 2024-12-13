@@ -35,7 +35,7 @@ export default function Footer() {
         </div>
         
         {/* Navigation Links */}
-        <div>
+        <div className=''>
           <h3 className="text-xl font-bold mb-3">Quick Links</h3>
           <ul className="text-gray-200 space-y-2">
           {["Home", "About", "Plan"].map((item, index) => (

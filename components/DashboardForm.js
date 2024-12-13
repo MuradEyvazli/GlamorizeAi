@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 const DashboardForm = () => {
@@ -134,24 +135,28 @@ const DashboardForm = () => {
 
         <div className="grid grid-cols-3 gap-8 mb-16">
           <div className="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
-            <h2 className="text-2xl font-bold mb-4">AI Images</h2>
-            <p className="text-gray-400">Powered by Kolors</p>
+            <h2 className="text-2xl font-bold mb-4">AI Generatied Images</h2>
+            <p className="text-gray-400">Powered by Glamorize Ai</p>
+            <Link href="/dashboard/generated-images">
             <button className="mt-6 bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">
               Explore
             </button>
+            </Link>
           </div>
 
           <div className="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
-            <h2 className="text-2xl font-bold mb-4">AI Videos</h2>
-            <p className="text-gray-400">Powered by KLING</p>
+            <h2 className="text-2xl font-bold mb-4">AI Futures</h2>
+            <p className="text-gray-400">Powered by Glamorize Ai</p>
+            <Link href="/dashboard/ai-futures">
             <button className="mt-6 bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">
               Explore
             </button>
+            </Link>
           </div>
 
           <div className="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
             <h2 className="text-2xl font-bold mb-4">Video Editor</h2>
-            <p className="text-gray-400">Coming Soon</p>
+            <p className="text-gray-400">Coming Soon..</p>
           </div>
         </div>
 
