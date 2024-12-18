@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default nextConfig;
+const nextConfig = {
+    experimental: {
+      appDir: true, // app dizinini etkinleştirir
+    },
+  };
+  
+  export default nextConfig;
+  

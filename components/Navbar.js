@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
-import { FaCaretDown, FaUserCircle, FaRocket } from "react-icons/fa";
+import { FaCaretDown, FaUserCircle, FaRocket, FaBars } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,9 +13,11 @@ const Navbar = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showShadow, setShowShadow] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
   const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleDropdownMenu = () => setMenuOpen(!menuOpen);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,17 +75,7 @@ const Navbar = () => {
             />
           </Link>
 
-          <ul className="hidden md:flex space-x-6 text-white font-medium mt-4">
-            {["Home", "About", "Plan"].map((item, index) => (
-              <li key={index}>
-                <Link href={`#${item.toLowerCase()}`} className="hover:text-blue-500 transition">
-                  {item}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex items-center space-x-4 mt-4">
+          <div className="flex items-center space-x-4 mt-4 ml-auto">
             <button
               onClick={toggleChat}
               className="flex items-center space-x-2 bg-gradient-to-r from-[#0980a81e] to-[#1a1a2b] text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition"
@@ -91,6 +83,7 @@ const Navbar = () => {
               <FaRocket />
               <span>Support</span>
             </button>
+            
 
             {session ? (
               <div className="relative">
@@ -127,6 +120,33 @@ const Navbar = () => {
             ) : (
               <div></div>
             )}
+            <div className="relative">
+              <button
+                onClick={toggleDropdownMenu}
+                className="text-white text-2xl hover:text-blue-500 transition"
+              >
+                <FaBars />
+              </button>
+
+              <AnimatePresence>
+                {menuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="absolute top-16 right-0 bg-white rounded-lg shadow-lg z-20 py-4 w-48"
+                  >
+                    <ul>
+                      {["Home", "About", "Plans"].map((item, index) => (
+                        <li key={index} className="px-6 py-2 hover:bg-gray-200">
+                          <Link href={`#${item.toLowerCase()}`}>{item}</Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </nav>
       </div>

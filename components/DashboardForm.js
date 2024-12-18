@@ -4,28 +4,48 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 
 const DashboardForm = () => {
+  const [analysisMessage, setAnalysisMessage] = useState(null);
   const [selectedPersonImage, setSelectedPersonImage] = useState(null);
   const [selectedGarmentImage, setSelectedGarmentImage] = useState(null);
   const [resultImage, setResultImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [question, setQuestion] = useState('');
+const [analysisResponse, setAnalysisResponse] = useState('');
 
-  const toBase64WithoutPrefix = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+const toBase64WithoutPrefix = (input) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
+    // Eğer input bir URL ise fetch ile Blob'a dönüştür
+    if (typeof input === 'string') {
+      fetch(input)
+        .then((response) => {
+          if (!response.ok) throw new Error('Failed to fetch the image URL.');
+          return response.blob();
+        })
+        .then((blob) => {
+          reader.readAsDataURL(blob);
+          reader.onload = () => {
+            const base64String = reader.result.split(',')[1];
+            resolve(base64String);
+          };
+        })
+        .catch((error) => reject(error));
+    } else if (input instanceof Blob || input instanceof File) {
+      reader.readAsDataURL(input);
       reader.onload = () => {
-        try {
-          const base64String = reader.result.split(',')[1];
-          resolve(base64String);
-        } catch (error) {
-          console.error('Base64 Parsing Error:', error.message);
-          reject(new Error('Invalid Base64 data.'));
-        }
+        const base64String = reader.result.split(',')[1];
+        resolve(base64String);
       };
-      reader.onerror = () => reject(new Error('Failed to read the file.'));
-    });
-  };
+    } else {
+      reject(new Error('Invalid input type. Must be a URL, File, or Blob.'));
+    }
+
+    reader.onerror = () => reject(new Error('Failed to read the file.'));
+  });
+};
+
+
 
   const validateImage = (file) => {
     const validFormats = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -125,6 +145,50 @@ const DashboardForm = () => {
       })
       .catch((error) => console.error('Error loading example image:', error));
   };
+
+  const handleQuestionSubmit = async () => {
+    if (!resultImage) {
+      alert('Lütfen önce oluşturulan fotoğrafı bekleyin ve ardından sorularınızı sorun!');
+      return;
+    }
+  
+    try {
+      setIsLoading(true);
+  
+      const resultImageBase64 = await toBase64WithoutPrefix(resultImage);
+  
+      const response = await fetch('/api/ai-analysis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resultImageBase64, question }),
+      });
+  
+      // Yanıtın boş olup olmadığını kontrol et
+      if (!response.ok) {
+        console.error("Response Error:", response.status, response.statusText);
+        alert('API isteği başarısız oldu.');
+        return;
+      }
+  
+      const data = await response.json();
+  
+      if (!data.success) {
+        console.error("API Yanıtı Hatası:", data.message);
+        setAnalysisResponse('Analiz başarısız oldu: ' + data.message);
+      } else {
+        setAnalysisResponse(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Bir hata oluştu. Detayları konsolda görebilirsiniz.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  
+  
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col items-center justify-center">
@@ -281,7 +345,34 @@ const DashboardForm = () => {
             {isLoading ? 'Processing...' : 'Run Try-On'}
           </button>
         </div>
-      </div>
+    </div>
+
+      <div className="bg-gray-800 rounded-lg shadow-lg p-6 mt-8 text-center">
+        <h2 className="text-2xl font-bold mb-4">AI Analysis</h2>
+       <textarea
+        placeholder="Kombin hakkında ne soruyorsun? (Örn: 'Bu kombine kaç puan verirsin?')"
+       value={question}
+       onChange={(e) => setQuestion(e.target.value)}
+         className="w-full p-6 rounded-lg bg-gray-700 text-white mb-4"
+        rows="3"
+        />
+       <button
+    onClick={handleQuestionSubmit}
+    disabled={isLoading}
+    className={`w-full px-6 py-3 rounded-lg font-bold text-lg transition-colors ${
+      isLoading ? 'bg-gray-600 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 text-white'
+    }`}
+  >
+    {isLoading ? 'Analyzing...' : 'Ask AI'}
+  </button>
+  {analysisResponse && (
+    <div className="mt-4 bg-gray-700 p-4 rounded-lg text-left">
+      <p className="text-gray-300">{analysisResponse}</p>
+ </div>
+  )}
+</div>
+
+      
     </div>
   );
 };
