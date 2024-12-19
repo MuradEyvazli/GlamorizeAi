@@ -199,7 +199,7 @@ const toBase64WithoutPrefix = (input) => {
 
         <div className="grid grid-cols-3 gap-8 mb-16">
           <div className="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
-            <h2 className="text-2xl font-bold mb-4">AI Generatied Images</h2>
+            <h2 className="text-2xl font-bold mb-4">AI Images</h2>
             <p className="text-gray-400">Powered by Glamorize Ai</p>
             <Link href="/dashboard/generated-images">
             <button className="mt-6 bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">
@@ -347,30 +347,22 @@ const toBase64WithoutPrefix = (input) => {
         </div>
     </div>
 
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6 mt-8 text-center">
+      <div className="bg-gray-800 rounded-lg shadow-lg p-6 mt-8 mb-20 text-center">
         <h2 className="text-2xl font-bold mb-4">AI Analysis</h2>
        <textarea
-        placeholder="Kombin hakkında ne soruyorsun? (Örn: 'Bu kombine kaç puan verirsin?')"
-       value={question}
-       onChange={(e) => setQuestion(e.target.value)}
+        placeholder="Ask some questions about your outfit? (exp: 'What is the color of the t-shirt?')" value={question} onChange={(e) => setQuestion(e.target.value)}
          className="w-full p-6 rounded-lg bg-gray-700 text-white mb-4"
         rows="3"
         />
-       <button
-    onClick={handleQuestionSubmit}
-    disabled={isLoading}
-    className={`w-full px-6 py-3 rounded-lg font-bold text-lg transition-colors ${
-      isLoading ? 'bg-gray-600 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 text-white'
-    }`}
-  >
-    {isLoading ? 'Analyzing...' : 'Ask AI'}
-  </button>
-  {analysisResponse && (
-    <div className="mt-4 bg-gray-700 p-4 rounded-lg text-left">
-      <p className="text-gray-300">{analysisResponse}</p>
- </div>
+       <button onClick={handleQuestionSubmit} disabled={isLoading} className={`w-full px-6 py-3 rounded-lg font-bold text-lg transition-colors ${isLoading ? 'bg-gray-600 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}>
+        {isLoading ? 'Analyzing...' : 'Ask AI'}
+       </button>
+       {analysisResponse && (
+        <div className="mt-4 bg-gray-700 p-4 rounded-lg text-left">
+        <p className="text-gray-300">{analysisResponse}</p>
+      </div>
   )}
-</div>
+   </div>
 
       
     </div>

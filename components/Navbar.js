@@ -153,14 +153,7 @@ const Navbar = () => {
 
       <AnimatePresence>
         {isChatOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-10 right-10 rounded-lg shadow-lg w-80 h-80 z-50"
-          >
             <SupportChat />
-          </motion.div>
         )}
       </AnimatePresence>
     </>
