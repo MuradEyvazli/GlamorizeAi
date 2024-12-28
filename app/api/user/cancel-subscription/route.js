@@ -32,6 +32,7 @@ export async function POST(request) {
       );
     }
 
+    // Refund user's balance
     user.balance += subscription.price;
     user.subscriptionStatus = false;
     user.subscriptionId = null;
@@ -39,7 +40,11 @@ export async function POST(request) {
     await user.save();
 
     return NextResponse.json(
-      { message: 'Subscription canceled successfully', balance: user.balance },
+      {
+        message: 'Subscription canceled successfully',
+        refundedAmount: subscription.price,
+        balance: user.balance,
+      },
       { status: 200 }
     );
   } catch (error) {

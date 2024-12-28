@@ -3,11 +3,14 @@ import mongoose, { Schema, models } from "mongoose";
 const userSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true 
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true, 
+        lowercase: true 
     },
     password: {
         type: String,
@@ -23,8 +26,21 @@ const userSchema = new Schema({
     },
     subscriptionId: {
         type: Schema.Types.ObjectId,
-        ref: 'Subscription', // Assuming you have a Subscription model
+        ref: 'Subscription',
         default: null
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
+    lastLogin: {
+        type: Date,
+        default: null
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 

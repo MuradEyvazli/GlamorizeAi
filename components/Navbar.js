@@ -14,6 +14,7 @@ const Navbar = () => {
   const [showShadow, setShowShadow] = useState(false);
   const [balance, setBalance] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -31,23 +32,35 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      if (session) {
-        try {
-          const response = await fetch(`/api/user/balance?email=${session.user.email}`);
-          const data = await response.json();
-          if (response.ok) {
-            setBalance(data.balance);
-          } else {
-            console.error(data.error);
-          }
-        } catch (error) {
-          console.error("Error fetching balance:", error);
+    const fetchData = async () => {
+      if (!session?.user?.email) return;
+
+      try {
+        // 1) Balance bilgisini alın (daha önceki örnek)
+        const balanceRes = await fetch(`/api/user/balance?email=${session.user.email}`);
+        const balanceData = await balanceRes.json();
+        if (balanceRes.ok) {
+          setBalance(balanceData.balance);
+        } else {
+          console.error(balanceData.error);
         }
+
+        // 2) Subscription durumu için yeni endpoint’e istek atın:
+        const subRes = await fetch(`/api/user/subscription-status?email=${session.user.email}`);
+        const subData = await subRes.json();
+
+        if (subRes.ok) {
+          // Burada subData.subscriptionStatus true/false geliyor
+          setIsSubscribed(subData.subscriptionStatus);
+        } else {
+          console.error(subData.error);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
       }
     };
 
-    fetchBalance();
+    fetchData();
   }, [session]);
 
   return (
@@ -107,6 +120,9 @@ const Navbar = () => {
                       <p className="font-bold text-lg">{session.user?.email}</p>
                       <p className="text-sm text-gray-600 mt-2">Balance:</p>
                       <p className="font-bold text-lg">${balance}</p>
+                      <p className="text-sm text-gray-600 mt-2">Subscribe Status:</p>
+                      <p className="font-bold text-lg">{isSubscribed ? "Subscribed" : "Not Subscribed"}</p>
+
                       <button
                         onClick={() => signOut()}
                         className="w-full mt-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg transition hover:from-purple-500 hover:to-indigo-500"

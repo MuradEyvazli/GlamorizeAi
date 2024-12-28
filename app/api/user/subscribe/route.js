@@ -24,6 +24,14 @@ export async function POST(request) {
     const subscription = await Subscription.findById(subscriptionId);
     if (!subscription) return NextResponse.json({ error: 'Subscription plan not found' }, { status: 404 });
 
+    // Check if the user is already subscribed
+    if (user.subscriptionStatus) {
+      return NextResponse.json(
+        { error: 'User already has an active subscription' },
+        { status: 400 }
+      );
+    }
+
     // Balance check
     if (user.balance < subscription.price) {
       return NextResponse.json({ error: 'Insufficient balance' }, { status: 400 });
@@ -36,7 +44,15 @@ export async function POST(request) {
 
     await user.save();
 
-    return NextResponse.json({ message: 'Subscription successful', balance: user.balance }, { status: 200 });
+    return NextResponse.json(
+      {
+        message: 'Subscription successful',
+        userId: user._id,
+        subscriptionId: subscription._id,
+        balance: user.balance,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Error during subscription:', error);
     return NextResponse.json(
