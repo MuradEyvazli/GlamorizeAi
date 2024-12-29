@@ -19,7 +19,7 @@
    - Personalized suggestions are provided based on your uploads and preferences.
    - Experience an unmatched level of style guidance from advanced AI algorithms.
 
-   ![AI Analysis](attachment://glamorizeAiConsequensience.png)
+   ![AI Analysis](/projectImages/firstAttend.png)
    > AI-powered analysis offering style insights and guidance. This feature helps users refine their fashion choices with actionable feedback.
 
 3. **Subscription Plans**
@@ -27,34 +27,34 @@
    - Plans include monthly credits for virtual try-on and exclusive premium features.
    - Manage your subscription directly within the user-friendly dashboard.
 
-   ![Subscription Plans](attachment://subscription.png)
+   ![Subscription Plans](/projectImages/subscription.png)
    > A clear and modern subscription page where users can explore and select plans that suit their needs, ensuring transparency and ease of use.
 
 4. **Dashboard & Seamless Navigation**
    - A polished, responsive design ensures a smooth experience across all devices.
    - Track your account balance, subscription status, and more with the interactive dashboard.
 
-   ![Dashboard](attachment://dashboard.png)
+   ![Dashboard](/projectImages/dashboard.png)
    > The dashboard provides a comprehensive view of your account, including your balance, subscription details, and activity overview.
 
-   ![Dashboard Menu](attachment://dashboardMenu.png)
+   ![Dashboard Menu](/projectImages/dashboardMenu.png)
    > A clean and intuitive menu design for navigating through your account features effortlessly.
 
 5. **Interactive AI Futures**
    - Dive into creative and groundbreaking AI applications in fashion, design, and beyond.
    - Explore how AI is reshaping global trends in style.
 
-   ![About AI](attachment://aboutAi.png)
+   ![About AI](/projectImages/aboutAi.png)
    > Discover the future of AI in fashion with insights into predictive analytics, robotics, and more. This section expands your understanding of AI's impact.
 
 6. **Secure & Simplified Login/Registration**
    - An elegant interface for hassle-free user authentication.
    - Start your journey in seconds with a secure login and registration process.
 
-   ![Login](attachment://login.png)
+   ![Login](/projectImages/login.png)
    > A visually appealing login page ensuring secure access to your account.
 
-   ![Register](attachment://register.png)
+   ![Register](/projectImages/register.png)
    > A user-friendly registration page designed to simplify account creation for new users.
 
 ---
