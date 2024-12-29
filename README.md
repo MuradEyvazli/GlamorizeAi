@@ -15,32 +15,7 @@
 
    ![Register](/projectImages/register.png)
    > A user-friendly registration page designed to simplify account creation for new users.
-
-2. **Virtual Try-On Experience**
-   - Upload your own photos or use pre-designed mannequins.
-   - Try on a wide range of outfits virtually to see what suits you best.
-   - AI technology ensures precise garment fitting, giving a lifelike preview.
-
-   ![Generated Images](/projectImages/firstAttend.png)
-   > Explore AI-generated images tailored to your style. This section showcases how outfits look on different personas, providing a seamless preview experience.
-
-3. **AI-Powered Fashion Insights**
-   - Get real-time AI feedback on how well selected outfits match your style.
-   - Personalized suggestions are provided based on your uploads and preferences.
-   - Experience an unmatched level of style guidance from advanced AI algorithms.
-
-   ![AI Analysis](/projectImages/glamorizeAiConsequensience.png)
-   > AI-powered analysis offering style insights and guidance. This feature helps users refine their fashion choices with actionable feedback.
-
-4. **Subscription Plans**
-   - Choose between Starter, Premium, Pro, and Expert plans, catering to different levels of engagement.
-   - Plans include monthly credits for virtual try-on and exclusive premium features.
-   - Manage your subscription directly within the user-friendly dashboard.
-
-   ![Subscription Plans](/projectImages/subscription.png)
-   > A clear and modern subscription page where users can explore and select plans that suit their needs, ensuring transparency and ease of use.
-
-5. **Dashboard & Seamless Navigation**
+2. **Dashboard & Seamless Navigation**
    - A polished, responsive design ensures a smooth experience across all devices.
    - Track your account balance, subscription status, and more with the interactive dashboard.
 
@@ -49,6 +24,31 @@
 
    ![Dashboard Menu](/projectImages/dashboardMenu.png)
    > A clean and intuitive menu design for navigating through your account features effortlessly.
+   
+3. **Virtual Try-On Experience**
+   - Upload your own photos or use pre-designed mannequins.
+   - Try on a wide range of outfits virtually to see what suits you best.
+   - AI technology ensures precise garment fitting, giving a lifelike preview.
+
+   ![Generated Images](/projectImages/firstAttend.png)
+   > Explore AI-generated images tailored to your style. This section showcases how outfits look on different personas, providing a seamless preview experience.
+
+4. **AI-Powered Fashion Insights**
+   - Get real-time AI feedback on how well selected outfits match your style.
+   - Personalized suggestions are provided based on your uploads and preferences.
+   - Experience an unmatched level of style guidance from advanced AI algorithms.
+
+   ![AI Analysis](/projectImages/glamorizeAiConsequensience.png)
+   > AI-powered analysis offering style insights and guidance. This feature helps users refine their fashion choices with actionable feedback.
+
+5. **Subscription Plans**
+   - Choose between Starter, Premium, Pro, and Expert plans, catering to different levels of engagement.
+   - Plans include monthly credits for virtual try-on and exclusive premium features.
+   - Manage your subscription directly within the user-friendly dashboard.
+
+   ![Subscription Plans](/projectImages/subscription.png)
+   > A clear and modern subscription page where users can explore and select plans that suit their needs, ensuring transparency and ease of use.
+
 
 6. **Interactive AI Futures**
    - Dive into creative and groundbreaking AI applications in fashion, design, and beyond.
