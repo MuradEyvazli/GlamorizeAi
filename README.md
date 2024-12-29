@@ -11,7 +11,7 @@
    - Try on a wide range of outfits virtually to see what suits you best.
    - AI technology ensures precise garment fitting, giving a lifelike preview.
 
-   ![Generated Images](/projectImages/generatedImages.png)
+   ![Generated Images](/projectImages/firstAttend.png)
    > Explore AI-generated images tailored to your style. This section showcases how outfits look on different personas, providing a seamless preview experience.
 
 2. **AI-Powered Fashion Insights**
@@ -19,7 +19,7 @@
    - Personalized suggestions are provided based on your uploads and preferences.
    - Experience an unmatched level of style guidance from advanced AI algorithms.
 
-   ![AI Analysis](/projectImages/firstAttend.png)
+   ![AI Analysis](/projectImages/glamorizeAiConsequensience.png)
    > AI-powered analysis offering style insights and guidance. This feature helps users refine their fashion choices with actionable feedback.
 
 3. **Subscription Plans**
