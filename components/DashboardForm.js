@@ -280,40 +280,41 @@ const DashboardForm = () => {
 
         {/* Hoşgeldiniz Açıklaması */}
         <div className="text-center bg-gray-800 rounded-lg p-4 sm:p-8 shadow-lg mb-6 sm:mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Glamorize-AI'ye Hoş Geldiniz!</h2>
-          <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">
-            Glamorize-AI, kıyafetlerinizi sanal olarak denemenizi sağlayan, akıllı analizlerle desteklenen ve
-            kişisel tarzınızı bulmanıza yardımcı olan bir platformdur.
-          </p>
+  <h2 className="text-2xl sm:text-3xl font-bold mb-4">Welcome to Glamorize-AI!</h2>
+  <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">
+    Glamorize-AI is a platform that allows you to virtually try on outfits, supports you with smart analytics, and helps you discover your personal style.
+  </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 text-left">
-            <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3">🧑‍🎨 Kıyafet Deneme</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                Kendi fotoğrafınızı yükleyin ve kıyafetleri üzerinizde nasıl göründüğünü hemen keşfedin.
-              </p>
-            </div>
-            <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3">🧠 Akıllı Analiz</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                AI destekli analizler ile tarzınızı daha iyi anlamak için sorular sorun.
-              </p>
-            </div>
-            <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3">💎 Abonelik Avantajları</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                Özel özelliklere erişim ve sınırsız kullanım ile tarzınızı en üst seviyeye çıkarın.
-              </p>
-            </div>
-          </div>
-          <div className="mt-8 sm:mt-12">
-            <a href="#plans">
-              <button className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white font-bold text-base sm:text-lg rounded-lg hover:shadow-lg transition">
-                {isSubscribed ? `Delete Subscription` : 'Subscribe Now'}
-              </button>
-            </a>
-          </div>
-        </div>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 text-left">
+    <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
+      <h3 className="text-lg sm:text-xl font-semibold mb-3">🧑‍🎨 Virtual Try-On</h3>
+      <p className="text-gray-400 text-sm sm:text-base">
+        Upload your own photo and see how different outfits look on you, instantly.
+      </p>
+    </div>
+    <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
+      <h3 className="text-lg sm:text-xl font-semibold mb-3">🧠 Smart Analysis</h3>
+      <p className="text-gray-400 text-sm sm:text-base">
+        Ask AI-powered questions to gain deeper insights into your style.
+      </p>
+    </div>
+    <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
+      <h3 className="text-lg sm:text-xl font-semibold mb-3">💎 Subscription Benefits</h3>
+      <p className="text-gray-400 text-sm sm:text-base">
+        Enjoy exclusive features and unlimited usage to elevate your style to the highest level.
+      </p>
+    </div>
+  </div>
+
+  <div className="mt-8 sm:mt-12">
+    <a href="#plans">
+      <button className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white font-bold text-base sm:text-lg rounded-lg hover:shadow-lg transition">
+        {isSubscribed ? 'Delete Subscription' : 'Subscribe Now'}
+      </button>
+    </a>
+  </div>
+</div>
+
 
         {/* Eğer abone ise */}
         {isSubscribed && (

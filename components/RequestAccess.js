@@ -31,7 +31,7 @@ const RequestAccess = () => {
             Start your trial with starter plan and try it for $4.99.
           </h1>
           <button
-            onClick={() => scrollToSection("plan")}
+            onClick={() => scrollToSection("plans")}
             className="bg-white text-black hover:bg-[#6c63ff] hover:text-white rounded-full px-8 py-3 text-lg hover:scale-105 transition duration-300 mb-10"
           >
             Request Access
