@@ -6,7 +6,17 @@
 
 ## Key Features of Glamorize AI
 
-1. **Virtual Try-On Experience**
+1. **Secure & Simplified Login/Registration**
+   - An elegant interface for hassle-free user authentication.
+   - Start your journey in seconds with a secure login and registration process.
+
+   ![Login](/projectImages/login.png)
+   > A visually appealing login page ensuring secure access to your account.
+
+   ![Register](/projectImages/register.png)
+   > A user-friendly registration page designed to simplify account creation for new users.
+
+2. **Virtual Try-On Experience**
    - Upload your own photos or use pre-designed mannequins.
    - Try on a wide range of outfits virtually to see what suits you best.
    - AI technology ensures precise garment fitting, giving a lifelike preview.
@@ -14,7 +24,7 @@
    ![Generated Images](/projectImages/firstAttend.png)
    > Explore AI-generated images tailored to your style. This section showcases how outfits look on different personas, providing a seamless preview experience.
 
-2. **AI-Powered Fashion Insights**
+3. **AI-Powered Fashion Insights**
    - Get real-time AI feedback on how well selected outfits match your style.
    - Personalized suggestions are provided based on your uploads and preferences.
    - Experience an unmatched level of style guidance from advanced AI algorithms.
@@ -22,7 +32,7 @@
    ![AI Analysis](/projectImages/glamorizeAiConsequensience.png)
    > AI-powered analysis offering style insights and guidance. This feature helps users refine their fashion choices with actionable feedback.
 
-3. **Subscription Plans**
+4. **Subscription Plans**
    - Choose between Starter, Premium, Pro, and Expert plans, catering to different levels of engagement.
    - Plans include monthly credits for virtual try-on and exclusive premium features.
    - Manage your subscription directly within the user-friendly dashboard.
@@ -30,7 +40,7 @@
    ![Subscription Plans](/projectImages/subscription.png)
    > A clear and modern subscription page where users can explore and select plans that suit their needs, ensuring transparency and ease of use.
 
-4. **Dashboard & Seamless Navigation**
+5. **Dashboard & Seamless Navigation**
    - A polished, responsive design ensures a smooth experience across all devices.
    - Track your account balance, subscription status, and more with the interactive dashboard.
 
@@ -40,22 +50,12 @@
    ![Dashboard Menu](/projectImages/dashboardMenu.png)
    > A clean and intuitive menu design for navigating through your account features effortlessly.
 
-5. **Interactive AI Futures**
+6. **Interactive AI Futures**
    - Dive into creative and groundbreaking AI applications in fashion, design, and beyond.
    - Explore how AI is reshaping global trends in style.
 
    ![About AI](/projectImages/aboutAi.png)
    > Discover the future of AI in fashion with insights into predictive analytics, robotics, and more. This section expands your understanding of AI's impact.
-
-6. **Secure & Simplified Login/Registration**
-   - An elegant interface for hassle-free user authentication.
-   - Start your journey in seconds with a secure login and registration process.
-
-   ![Login](/projectImages/login.png)
-   > A visually appealing login page ensuring secure access to your account.
-
-   ![Register](/projectImages/register.png)
-   > A user-friendly registration page designed to simplify account creation for new users.
 
 ---
 
