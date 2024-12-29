@@ -11,7 +11,7 @@
    - Try on a wide range of outfits virtually to see what suits you best.
    - AI technology ensures precise garment fitting, giving a lifelike preview.
 
-   ![Generated Images](attachment://generatedImages.png)
+   ![Generated Images](/projectImages/generatedImages.png)
    > Explore AI-generated images tailored to your style. This section showcases how outfits look on different personas, providing a seamless preview experience.
 
 2. **AI-Powered Fashion Insights**
