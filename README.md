@@ -72,7 +72,7 @@
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/Glamorize-AI.git
+   git clone https://github.com/DeCaster/GlamorizeAi.git
    cd Glamorize-AI
    ```
 
