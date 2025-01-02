@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -34,9 +35,11 @@ const GeneratedImagesPage = () => {
               key={index}
               className="bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
             >
-              <img
+              <Image
                 src={imageSrc}
                 alt={`Generated Image ${index + 1}`}
+                width={400}
+                height={400}
                 className="w-full h-56 object-cover"
               />
               <div className="p-4">

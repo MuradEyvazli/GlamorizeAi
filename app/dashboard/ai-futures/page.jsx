@@ -57,7 +57,7 @@ const AiFuturesPage = () => {
           The Future of AI
         </h1>
         <p className="text-gray-400 mt-4 text-lg">
-          Discover the endless possibilities of Artificial Intelligence and how it's shaping our world.
+          Discover the endless possibilities of Artificial Intelligence and how its shaping our world.
         </p>
       </header>
 

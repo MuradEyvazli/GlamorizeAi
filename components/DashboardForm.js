@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const DashboardForm = () => {
   const { data: session } = useSession();
@@ -35,7 +36,6 @@ const DashboardForm = () => {
     };
     fetchUser();
   }, [session]);
-  
 
   const validateImage = (file) => {
     const validFormats = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -57,11 +57,6 @@ const DashboardForm = () => {
     }
   };
 
-  /**
-   * handleExampleClick: 
-   * Verilen URL’den resmi indirerek, File/Blob tipinde
-   * 'setImage' state güncellemesini yapar.
-   */
   const handleExampleClick = async (imageUrl, setImage) => {
     try {
       const response = await fetch(imageUrl);
@@ -128,7 +123,7 @@ const DashboardForm = () => {
       alert('Please wait for the generated photo before asking questions!');
       return;
     }
-  
+
     try {
       setIsLoading(true);
 
@@ -136,18 +131,18 @@ const DashboardForm = () => {
       const blob = await response.blob();
       const file = new File([blob], 'result.jpg', { type: blob.type });
       const resultImageBase64 = await toBase64WithoutPrefix(file);
-  
+
       const res = await fetch('/api/ai-analysis', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resultImageBase64, question }),
       });
-  
+
       if (!res.ok) {
         alert('API request failed.');
         return;
       }
-  
+
       const data = await res.json();
       if (!data.success) {
         setAnalysisResponse('Analysis failed: ' + data.message);
@@ -161,13 +156,13 @@ const DashboardForm = () => {
       setIsLoading(false);
     }
   };
-  
+
   const toBase64WithoutPrefix = async (input) => {
     if (typeof input === 'string') {
       const response = await fetch(input);
-      input = await response.blob(); 
+      input = await response.blob();
     }
-  
+
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       if (input instanceof Blob || input instanceof File) {
@@ -182,7 +177,7 @@ const DashboardForm = () => {
       reader.onerror = () => reject(new Error('Failed to read the file.'));
     });
   };
-  
+
   const fetchResult = async (taskId) => {
     try {
       const response = await fetch(`/api/try-on-result?taskId=${taskId}`);
@@ -280,41 +275,40 @@ const DashboardForm = () => {
 
         {/* Hoşgeldiniz Açıklaması */}
         <div className="text-center bg-gray-800 rounded-lg p-4 sm:p-8 shadow-lg mb-6 sm:mb-10">
-  <h2 className="text-2xl sm:text-3xl font-bold mb-4">Welcome to Glamorize-AI!</h2>
-  <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">
-    Glamorize-AI is a platform that allows you to virtually try on outfits, supports you with smart analytics, and helps you discover your personal style.
-  </p>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Welcome to Glamorize-AI!</h2>
+          <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">
+            Glamorize-AI is a platform that allows you to virtually try on outfits, supports you with smart analytics, and helps you discover your personal style.
+          </p>
 
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 text-left">
-    <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
-      <h3 className="text-lg sm:text-xl font-semibold mb-3">🧑‍🎨 Virtual Try-On</h3>
-      <p className="text-gray-400 text-sm sm:text-base">
-        Upload your own photo and see how different outfits look on you, instantly.
-      </p>
-    </div>
-    <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
-      <h3 className="text-lg sm:text-xl font-semibold mb-3">🧠 Smart Analysis</h3>
-      <p className="text-gray-400 text-sm sm:text-base">
-        Ask AI-powered questions to gain deeper insights into your style.
-      </p>
-    </div>
-    <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
-      <h3 className="text-lg sm:text-xl font-semibold mb-3">💎 Subscription Benefits</h3>
-      <p className="text-gray-400 text-sm sm:text-base">
-        Enjoy exclusive features and unlimited usage to elevate your style to the highest level.
-      </p>
-    </div>
-  </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 text-left">
+            <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3">🧑‍🎨 Virtual Try-On</h3>
+              <p className="text-gray-400 text-sm sm:text-base">
+                Upload your own photo and see how different outfits look on you, instantly.
+              </p>
+            </div>
+            <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3">🧠 Smart Analysis</h3>
+              <p className="text-gray-400 text-sm sm:text-base">
+                Ask AI-powered questions to gain deeper insights into your style.
+              </p>
+            </div>
+            <div className="p-4 sm:p-6 bg-gray-700 rounded-lg">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3">💎 Subscription Benefits</h3>
+              <p className="text-gray-400 text-sm sm:text-base">
+                Enjoy exclusive features and unlimited usage to elevate your style to the highest level.
+              </p>
+            </div>
+          </div>
 
-  <div className="mt-8 sm:mt-12">
-    <a href="#plans">
-      <button className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white font-bold text-base sm:text-lg rounded-lg hover:shadow-lg transition">
-        {isSubscribed ? 'Delete Subscription' : 'Subscribe Now'}
-      </button>
-    </a>
-  </div>
-</div>
-
+          <div className="mt-8 sm:mt-12">
+            <a href="#plans">
+              <button className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white font-bold text-base sm:text-lg rounded-lg hover:shadow-lg transition">
+                {isSubscribed ? 'Delete Subscription' : 'Subscribe Now'}
+              </button>
+            </a>
+          </div>
+        </div>
 
         {/* Eğer abone ise */}
         {isSubscribed && (
@@ -327,11 +321,16 @@ const DashboardForm = () => {
                 {/* Kullanıcı dosya yükleme alanı */}
                 <div className="border-2 border-dashed border-gray-400 rounded-lg h-40 sm:h-56 md:h-72 flex items-center justify-center mb-4 sm:mb-6">
                   {selectedPersonImage ? (
-                    <img
-                      src={URL.createObjectURL(selectedPersonImage)}
-                      alt="Selected Person"
-                      className="h-full object-contain rounded-md"
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={URL.createObjectURL(selectedPersonImage)}
+                        alt="Selected Person"
+                        fill
+                        unoptimized
+                        style={{ objectFit: 'contain' }}
+                        className="rounded-md"
+                      />
+                    </div>
                   ) : (
                     <p className="text-gray-400 text-sm sm:text-base">Drag & Drop or Click to Upload</p>
                   )}
@@ -350,24 +349,30 @@ const DashboardForm = () => {
                   Choose Image
                 </label>
 
-                {/* Üç adet örnek fotoğrafı listeleme */}
+                {/* Örnek fotoğraflar */}
                 <div className="mt-4 flex gap-2 justify-center">
-                  <img
+                  <Image
                     src="/humans/000.png"
                     alt="Example Person 1"
                     className="cursor-pointer w-16 h-24 sm:w-20 sm:h-28 object-cover rounded-md hover:opacity-80 transition"
+                    width={80}
+                    height={120}
                     onClick={() => handleExampleClick('/humans/000.png', setSelectedPersonImage)}
                   />
-                  <img
+                  <Image
                     src="/humans/001.png"
                     alt="Example Person 2"
                     className="cursor-pointer w-16 h-24 sm:w-20 sm:h-28 object-cover rounded-md hover:opacity-80 transition"
+                    width={80}
+                    height={120}
                     onClick={() => handleExampleClick('/humans/001.png', setSelectedPersonImage)}
                   />
-                  <img
-                    src="/humans/003.png"
+                  <Image
+                    src="/humans/002.png"
                     alt="Example Person 3"
                     className="cursor-pointer w-16 h-24 sm:w-20 sm:h-28 object-cover rounded-md hover:opacity-80 transition"
+                    width={80}
+                    height={120}
                     onClick={() => handleExampleClick('/humans/002.png', setSelectedPersonImage)}
                   />
                 </div>
@@ -380,11 +385,16 @@ const DashboardForm = () => {
                 {/* Kullanıcı dosya yükleme alanı */}
                 <div className="border-2 border-dashed border-gray-400 rounded-lg h-40 sm:h-56 md:h-72 flex items-center justify-center mb-4 sm:mb-6">
                   {selectedGarmentImage ? (
-                    <img
-                      src={URL.createObjectURL(selectedGarmentImage)}
-                      alt="Selected Garment"
-                      className="h-full object-contain rounded-md"
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={URL.createObjectURL(selectedGarmentImage)}
+                        alt="Selected Garment"
+                        fill
+                        unoptimized
+                        style={{ objectFit: 'contain' }}
+                        className="rounded-md"
+                      />
+                    </div>
                   ) : (
                     <p className="text-gray-400 text-sm sm:text-base">Drag & Drop or Click to Upload</p>
                   )}
@@ -403,24 +413,30 @@ const DashboardForm = () => {
                   Choose Image
                 </label>
 
-                {/* Üç adet örnek kıyafeti listeleme */}
+                {/* Üç adet örnek kıyafet */}
                 <div className="mt-4 flex gap-2 justify-center">
-                  <img
+                  <Image
                     src="/cloth/02_upper.jpg"
                     alt="Example Garment 1"
                     className="cursor-pointer w-16 h-24 sm:w-20 sm:h-28 object-cover rounded-md hover:opacity-80 transition"
+                    width={80}
+                    height={120}
                     onClick={() => handleExampleClick('/cloth/02_upper.jpg', setSelectedGarmentImage)}
                   />
-                  <img
+                  <Image
                     src="/cloth/03_upper.jpg"
                     alt="Example Garment 2"
                     className="cursor-pointer w-16 h-24 sm:w-20 sm:h-28 object-cover rounded-md hover:opacity-80 transition"
+                    width={80}
+                    height={120}
                     onClick={() => handleExampleClick('/cloth/03_upper.jpg', setSelectedGarmentImage)}
                   />
-                  <img
+                  <Image
                     src="/cloth/04_upper.jpg"
                     alt="Example Garment 3"
                     className="cursor-pointer w-16 h-24 sm:w-20 sm:h-28 object-cover rounded-md hover:opacity-80 transition"
+                    width={80}
+                    height={120}
                     onClick={() => handleExampleClick('/cloth/04_upper.jpg', setSelectedGarmentImage)}
                   />
                 </div>
@@ -432,11 +448,16 @@ const DashboardForm = () => {
               <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-8">Get Try-On Results</h2>
               <div className="border-2 border-dashed border-gray-400 rounded-lg h-40 sm:h-56 md:h-72 flex items-center justify-center mb-4 sm:mb-6">
                 {resultImage ? (
-                  <img
-                    src={resultImage}
-                    alt="Result"
-                    className="h-full object-contain rounded-md"
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={resultImage}
+                      alt="Result"
+                      fill
+                      unoptimized
+                      style={{ objectFit: 'contain' }}
+                      className="rounded-md"
+                    />
+                  </div>
                 ) : (
                   <p className="text-gray-400 text-sm sm:text-base">Results will appear here</p>
                 )}

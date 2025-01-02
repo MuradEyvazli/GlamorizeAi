@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const PreInfoPage = () => {
@@ -19,8 +20,8 @@ const PreInfoPage = () => {
         {/* Purple Box with Left Border */}
         <div className="mt-8 md:mt-10 text-white p-4 rounded-lg shadow-md border-l-4 border-[#b80af8]">
           <p className="text-xs md:text-sm text-black">
-            "A bowl of soup that is also a portal to another dimension, digital
-            art"
+            A bowl of soup that is also a portal to another dimension, digital
+            art
           </p>
         </div>
       </div>
@@ -28,11 +29,7 @@ const PreInfoPage = () => {
       {/* Sağ Taraf Görsel */}
       <div className="w-full md:w-1/2 flex justify-center">
         <div className="bg-white p-4 rounded-lg shadow-md max-w-xs md:max-w-md">
-          <img
-            src="/examples/garment7.png"
-            alt="Example"
-            className="rounded-md object-cover w-full h-auto"
-          />
+          <Image src="/examples/garment8.png" alt="AI Photoshoot Generation" width={600} height={600} />
         </div>
       </div>
     </div>
