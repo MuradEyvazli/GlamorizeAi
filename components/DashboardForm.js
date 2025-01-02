@@ -237,6 +237,8 @@ const DashboardForm = () => {
             cursor-pointer
             // Parlama (Glow) efekti => Tailwind custom animation
             animate-glow-loop
+            mt-16
+            mb-8
           `}
           style={{
             textShadow: '0 0 8px rgba(255, 255, 255, 0.7)',
