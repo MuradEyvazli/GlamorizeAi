@@ -443,30 +443,6 @@ const SubProcess = () => {
             })}
           </motion.div>
         )}
-
-        {/* Bottom CTA Section */}
-        {!userSubscription && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="text-center mt-16"
-          >
-            <div className="bg-white rounded-2xl shadow-md p-8 max-w-3xl mx-auto border border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-800 mb-3">Not sure which plan is right for you?</h3>
-              <p className="text-gray-600 mb-6">
-                Our team is ready to help you choose the perfect plan for your fashion needs. 
-                Get in touch and we'll guide you through all the options.
-              </p>
-              <Link href="/contact">
-                <button className="inline-flex items-center px-6 py-3 rounded-lg font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:shadow-lg transition-all">
-                  Contact Us
-                  <FaArrowRight className="ml-2" />
-                </button>
-              </Link>
-            </div>
-          </motion.div>
-        )}
       </div>
 
       {/* Confirmation Modal */}

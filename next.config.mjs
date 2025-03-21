@@ -21,7 +21,8 @@ const nextConfig = {
    * Harici resim domainlerini yapılandırma
    */
   images: {
-    domains: ['i.pravatar.cc'], // pravatar.cc görsellerine izin ver
+    domains: ['i.pravatar.cc','res.cloudinary.com'] // pravatar.cc görsellerine izin ver
+    
     // Dilerseniz diğer domain'leri ekleyebilirsiniz
     // remotePatterns: [
     //   {

@@ -11,7 +11,8 @@ import {
   FaSignOutAlt,
   FaCog,
   FaWallet,
-  FaTachometerAlt
+  FaTachometerAlt,
+  FaBrain
 } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
@@ -124,7 +125,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <div className="relative w-9 h-9 mr-3 flex-shrink-0">
-                
+                <Image className="flex w-10 h-10 " src="/images/GAILOGO.png" alt="Logo" width={36} height={36} />
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-bold leading-tight text-gray-600">
@@ -157,7 +158,7 @@ const Navbar = () => {
                 className="p-2 rounded-full transition-all text-gray-500 hover:text-purple-600 hover:bg-purple-50"
                 aria-label="Support"
               >
-                <FaRegQuestionCircle className="text-xl" />
+                <FaBrain className="text-lg" />
               </button>
               
               {/* User section - only show when logged in */}
@@ -282,7 +283,7 @@ const Navbar = () => {
                               </Link>
                             ) : (
                               <Link 
-                                href="/pricing" 
+                                href="#pricing" 
                                 className="flex items-center px-4 py-2 text-sm text-purple-600 hover:bg-purple-50"
                                 onClick={() => setUserMenuOpen(false)}
                               >
