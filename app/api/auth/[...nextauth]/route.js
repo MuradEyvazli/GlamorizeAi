@@ -1,4 +1,4 @@
-import { connectDB } from "@/lib/db";
+import connectDB from '@/lib/db';
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";

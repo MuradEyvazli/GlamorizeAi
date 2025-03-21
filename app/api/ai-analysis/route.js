@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
-  let controller;  // AbortController referansımız
+  let controller;  
   try {
-    // 1) Body’den parametreleri al
+    
     const { resultImageBase64, question } = await req.json();
 
     // 2) Parametre kontrolü

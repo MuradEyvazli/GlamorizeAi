@@ -1,15 +1,16 @@
 // app/api/user/subscription-status/route.js
 import { NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';    // Kendi DB bağlantı fonksiyonunuz
-import User from '@/models/user';       // Kendi Mongoose User modeliniz
+import connectDB from '@/lib/db';
+import User from '@/models/user';
 
 export async function GET(request) {
   try {
     await connectDB();
-
-    // URL'den email parametresini al
+    
+    // Get email parameter from URL
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
+    
     if (!email) {
       return NextResponse.json(
         { error: 'Email is required' },
@@ -17,8 +18,9 @@ export async function GET(request) {
       );
     }
 
-    // Kullanıcıyı bul
-    const user = await User.findOne({ email }).select('subscriptionStatus');
+    // Find user and include both subscription status and ID
+    const user = await User.findOne({ email }).select('subscriptionStatus subscriptionId');
+    
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -26,11 +28,14 @@ export async function GET(request) {
       );
     }
 
-    // subscriptionStatus burada true/false döndüğünü varsayıyoruz
+    // Return boolean value explicitly to ensure proper type
     return NextResponse.json({
-      subscriptionStatus: user.subscriptionStatus, 
-    });
+      subscriptionStatus: user.subscriptionStatus === true,
+      subscriptionId: user.subscriptionId || null
+    }, { status: 200 });
+    
   } catch (error) {
+    console.error('Error fetching subscription status:', error);
     return NextResponse.json(
       { error: 'Failed to fetch subscription status', message: error.message },
       { status: 500 }

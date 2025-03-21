@@ -1,4 +1,5 @@
-import { connectDB } from '@/lib/db';
+// app/api/user/subscribe/route.js
+import connectDB from '@/lib/db';
 import User from '@/models/user';
 import Subscription from '@/models/subscription';
 import { NextResponse } from 'next/server';
@@ -6,10 +7,9 @@ import { NextResponse } from 'next/server';
 export async function POST(request) {
   try {
     await connectDB();
-
     const { userId, subscriptionId } = await request.json();
 
-    // Input validation
+    // Giriş doğrulama
     if (!userId || !subscriptionId) {
       return NextResponse.json(
         { error: 'User ID and Subscription ID are required' },
@@ -17,14 +17,18 @@ export async function POST(request) {
       );
     }
 
-    // Retrieve user and subscription data
+    // Kullanıcı ve abonelik verilerini al
     const user = await User.findById(userId);
-    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
 
     const subscription = await Subscription.findById(subscriptionId);
-    if (!subscription) return NextResponse.json({ error: 'Subscription plan not found' }, { status: 404 });
+    if (!subscription) {
+      return NextResponse.json({ error: 'Subscription plan not found' }, { status: 404 });
+    }
 
-    // Check if the user is already subscribed
+    // Kullanıcının zaten aboneliği var mı kontrol et
     if (user.subscriptionStatus) {
       return NextResponse.json(
         { error: 'User already has an active subscription' },
@@ -32,24 +36,39 @@ export async function POST(request) {
       );
     }
 
-    // Balance check
-    if (user.balance < subscription.price) {
-      return NextResponse.json({ error: 'Insufficient balance' }, { status: 400 });
+    // Bakiye ve fiyatı sayılara dönüştür
+    const currentBalance = parseFloat(user.balance || 0).toFixed(2);
+    const subscriptionPrice = parseFloat(subscription.price || 0).toFixed(2);
+
+    // Bakiye kontrolü
+    if (parseFloat(currentBalance) < parseFloat(subscriptionPrice)) {
+      return NextResponse.json({ 
+        error: 'Insufficient balance',
+        currentBalance: parseFloat(currentBalance),
+        requiredAmount: parseFloat(subscriptionPrice) 
+      }, { status: 400 });
     }
 
-    // Update user balance, subscription status, and ID
-    user.balance -= subscription.price;
+    // Kullanıcı bakiyesini güncelle
+    const newBalance = (parseFloat(currentBalance) - parseFloat(subscriptionPrice)).toFixed(2);
+    
+    // Kullanıcı belgesini güncelle
+    user.balance = parseFloat(newBalance);
     user.subscriptionStatus = true;
     user.subscriptionId = subscriptionId;
-
+    // Kalan istek sayısını abonelik planına göre ayarla
+    user.remainingRequests = subscription.allowedRequests || 0;
     await user.save();
 
+    // Güncellenmiş kullanıcı bilgilerini döndür
     return NextResponse.json(
       {
         message: 'Subscription successful',
         userId: user._id,
         subscriptionId: subscription._id,
-        balance: user.balance,
+        balance: parseFloat(user.balance).toFixed(2),
+        subscriptionStatus: user.subscriptionStatus,
+        remainingRequests: user.remainingRequests // Kalan istek sayısını ekle
       },
       { status: 200 }
     );

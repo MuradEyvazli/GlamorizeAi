@@ -1,42 +1,41 @@
-import User from '@/models/user'; 
-import { connectDB } from '@/lib/db';
+// app/api/user/[id]/route.js 
+import connectDB from '@/lib/db';
+import User from '@/models/user';
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
 
-export async function GET(req, { params }) {
+export async function GET(request, { params }) {
   try {
     await connectDB();
+    const userId = params.id;
 
-    const { id } = params;
-
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return NextResponse.json({ error: "Invalid user ID format" }, { status: 400 });
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
-    const user = await User.findById(id)
-      .select('subscriptionStatus subscriptionId balance role lastLogin isDeleted');
+    // Kullanıcıyı ID ile bul ve gereken tüm alanları seç
+    const user = await User.findById(userId)
+      .select('name email balance subscriptionStatus subscriptionId remainingRequests');
 
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    
-    if (user.isDeleted) {
-      return NextResponse.json({ error: "User account is deactivated" }, { status: 403 });
-    }
+    // Sayısal değerleri tutarlı formatta
+    const formattedBalance = parseFloat(user.balance || 0).toFixed(2);
 
     return NextResponse.json({
-      subscriptionStatus: user.subscriptionStatus,
-      subscriptionId: user.subscriptionId,
-      balance: user.balance,
-      role: user.role,
-      lastLogin: user.lastLogin
+      name: user.name,
+      email: user.email,
+      balance: parseFloat(formattedBalance),
+      subscriptionStatus: user.subscriptionStatus === true,
+      subscriptionId: user.subscriptionId || null,
+      remainingRequests: user.remainingRequests || 0 // Kalan istek sayısını dahil et
     }, { status: 200 });
+    
   } catch (error) {
-    console.error('Error fetching user:', error.message);
+    console.error('Error fetching user:', error);
     return NextResponse.json(
-      { error: 'Internal Server Error', message: error.message },
+      { error: 'Failed to fetch user', message: error.message },
       { status: 500 }
     );
   }

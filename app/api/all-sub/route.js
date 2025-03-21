@@ -1,5 +1,5 @@
 import Subscription from '@/models/subscription'; // Adjust the path according to your project structure
-import { connectDB } from '@/lib/db'; // Ensure this connects to your MongoDB
+import connectDB from '@/lib/db';// Ensure this connects to your MongoDB
 import { NextResponse } from 'next/server';
 
 export async function GET(req) {

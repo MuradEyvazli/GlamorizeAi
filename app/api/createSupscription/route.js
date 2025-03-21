@@ -1,26 +1,26 @@
-import Subscription from '../../../models/subscription'; // Adjust the path accordingly
+import Subscription from '../../../models/subscription';
 import { NextResponse } from 'next/server';
-import { connectDB } from "@/lib/db";
+import connectDB from '@/lib/db';
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { type, name, title, price, creditspermonth, details } = body;
+    const { name, title, price, creditspermonth, allowedRequests, yearlyPrice } = body;
     await connectDB();
 
     // Check if all required fields are provided
-    if (!name || !title || !price || !creditspermonth || !details || !type) {
+    if (!name || !title || !price || !creditspermonth || !allowedRequests) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
     }
 
     // Create new subscription
     const newSubscription = new Subscription({
-        type,
-        name,
-        title,
+      name,
+      title,
       price,
       creditspermonth,
-      details,
+      allowedRequests,
+      yearlyPrice,
     });
 
     // Save subscription to the database

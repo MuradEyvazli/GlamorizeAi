@@ -1,15 +1,15 @@
 import Subscription from '@/models/subscription';
-import { connectDB } from '@/lib/db';
+import connectDB from '@/lib/db';
 import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
 
-export async function GET(req, { params }) {
+export async function GET(request, { params }) {
   try {
     // Connect to the database
     await connectDB();
 
-    // Destructure the ID from the params object
-    const { id } = params;
+    // Doğrudan params.id kullanın, destructuring yapmayın
+    const id = params.id;
 
     // Validate the ID format
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {

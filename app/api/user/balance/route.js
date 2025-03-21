@@ -1,6 +1,6 @@
 // app/api/user/balance/route.js
-import { connectDB } from '@/lib/db'; // Adjust path based on your structure
-import User from '@/models/user'; // Ensure correct path to the User model
+import connectDB from '@/lib/db';
+import User from '@/models/user';
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
@@ -20,15 +20,22 @@ export async function GET(request) {
 
     // Find user by email and select the balance
     const user = await User.findOne({ email }).select('balance');
-
-    if (user) {
-      // Return user balance if found
-      return NextResponse.json({ balance: user.balance }, { status: 200 });
-    } else {
-      // Return 404 if user not found
+    
+    if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
+    
+    // Ensure the balance is properly formatted as a number with 2 decimal places
+    const formattedBalance = parseFloat(user.balance || 0).toFixed(2);
+    
+    // Return user balance if found
+    return NextResponse.json({ 
+      balance: parseFloat(formattedBalance),
+      rawBalance: formattedBalance 
+    }, { status: 200 });
+
   } catch (error) {
+    console.error('Error fetching balance:', error);
     return NextResponse.json(
       { error: 'Failed to fetch balance', message: error.message },
       { status: 500 }
@@ -52,21 +59,32 @@ export async function PATCH(request) {
 
     // Find the user by email
     const user = await User.findOne({ email });
-
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    // Format the new balance to ensure it's a proper number with 2 decimal places
+    const formattedBalance = parseFloat(newBalance).toFixed(2);
+    
     // Update the user's balance
-    user.balance = newBalance;
+    user.balance = parseFloat(formattedBalance);
     await user.save();
+
+    // Verify the balance was updated correctly by fetching the user again
+    const updatedUser = await User.findOne({ email }).select('balance');
+    const finalBalance = parseFloat(updatedUser.balance || 0).toFixed(2);
 
     // Return the updated balance
     return NextResponse.json(
-      { message: 'Balance updated successfully', balance: user.balance },
+      { 
+        message: 'Balance updated successfully', 
+        balance: parseFloat(finalBalance),
+        rawBalance: finalBalance
+      },
       { status: 200 }
     );
   } catch (error) {
+    console.error('Error updating balance:', error);
     return NextResponse.json(
       { error: 'Failed to update balance', message: error.message },
       { status: 500 }
