@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaPaperPlane, FaTimes, FaEnvelope, FaUser, FaCheck, FaExclamationCircle } from 'react-icons/fa';
+import { FaPaperPlane, FaTimes, FaEnvelope, FaUser, FaCheck, FaExclamationCircle, FaAt } from 'react-icons/fa';
 
 const ContactUs = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: '', message: '' });
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    email: '', 
+    message: '' 
+  });
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -36,13 +40,13 @@ const ContactUs = () => {
       const result = await response.json();
       
       if (response.ok) {
-        setStatus({ type: 'success', message: 'Message sent successfully!' });
-        setFormData({ name: '', message: '' });
+        setStatus({ type: 'success', message: 'Message sent successfully! We will get back to you soon.' });
+        setFormData({ name: '', email: '', message: '' });
       } else {
         setStatus({ type: 'error', message: result.error || 'Failed to send message.' });
       }
     } catch (error) {
-      setStatus({ type: 'error', message: 'An unexpected error occurred.' });
+      setStatus({ type: 'error', message: 'An unexpected error occurred. Please try again later.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -154,6 +158,24 @@ const ContactUs = () => {
                       onChange={handleInputChange}
                       className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                       placeholder="John Doe"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">Your Email</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400">
+                      <FaAt />
+                    </div>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      placeholder="johndoe@example.com"
                       required
                     />
                   </div>

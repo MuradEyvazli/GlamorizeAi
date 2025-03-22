@@ -291,13 +291,11 @@ const DashboardForm = () => {
 
       {/* Global loading screen */}
       {globalLoading && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center z-50">
-          <div className="flex flex-col items-center bg-white/90 p-8 rounded-2xl shadow-2xl">
+        <div className="fixed inset-0 bg-white/30 backdrop-blur-md flex items-center justify-center z-50">
+          <div className="flex flex-col items-center">
             <div className="relative w-20 h-20">
               <div className="absolute inset-0 rounded-full border-4 border-t-violet-600 border-violet-200 animate-spin"></div>
-              <div className="absolute inset-3 rounded-full border-4 border-t-fuchsia-600 border-fuchsia-200 animate-spin-slow"></div>
             </div>
-            <p className="mt-6 text-gray-800 font-medium">Loading your experience...</p>
           </div>
         </div>
       )}

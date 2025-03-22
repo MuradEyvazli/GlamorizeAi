@@ -124,7 +124,7 @@ const Navbar = () => {
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link href="/" className="flex items-center">
-              <div className="relative w-9 h-9 mr-3 flex-shrink-0">
+              <div className="relative w-9 h-9 mr-4 mb-2 flex-shrink-0">
                 <Image className="flex w-10 h-10 " src="/images/GAILOGO.png" alt="Logo" width={36} height={36} />
               </div>
               <div className="flex flex-col">

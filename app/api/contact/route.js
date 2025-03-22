@@ -2,33 +2,53 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request) {
   try {
-    const body = await request.json(); // Parse the incoming request body
-    const { name, message } = body;
+    const body = await request.json();
+    const { name, email, message } = body;
 
     // Validate input
-    if (!name || !message) {
+    if (!name || !email || !message) {
       return new Response(
-        JSON.stringify({ error: 'Name and message are required.' }),
+        JSON.stringify({ error: 'Name, email and message are required.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Configure nodemailer transporter
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(
+        JSON.stringify({ error: 'Please provide a valid email address.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Configure nodemailer with a real SMTP service
     const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
+      service: 'gmail',  // You can use Gmail, or replace with another provider
       auth: {
-          user: 'sedrick.johnston86@ethereal.email',
-          pass: 'wHuT9sqQKqx5DVyt5T'
+        user: process.env.EMAIL_USER,     // Set these in your .env file
+        pass: process.env.EMAIL_PASSWORD  // Use an app password if using Gmail
       }
-  });
+    });
 
     // Email options
     const mailOptions = {
-      from: 'sedrick.johnston86@ethereal.email',
-      to: 'muradnihad00@gmail.com',
-      subject: 'Contact Form Submission',
-      text: `Name: ${name}\nMessage: ${message}`,
+      from: `"Contact Form" <${process.env.EMAIL_USER}>`,
+      to: 'muradnihad00@gmail.com',  // Your email address
+      replyTo: email,  // Makes it easy to reply directly to the sender
+      subject: `New Contact Form Submission from ${name}`,
+      text: `
+Name: ${name}
+Email: ${email}
+Message: ${message}
+      `,
+      html: `
+<h2>New Contact Form Submission</h2>
+<p><strong>From:</strong> ${name}</p>
+<p><strong>Email:</strong> ${email}</p>
+<p><strong>Message:</strong></p>
+<p>${message.replace(/\n/g, '<br>')}</p>
+      `
     };
 
     // Send email
@@ -41,7 +61,7 @@ export async function POST(request) {
   } catch (error) {
     console.error('Error sending email:', error);
     return new Response(
-      JSON.stringify({ error: 'Failed to send message.' }),
+      JSON.stringify({ error: 'Failed to send message. Please try again later.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
