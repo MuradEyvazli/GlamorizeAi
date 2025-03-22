@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
@@ -12,7 +14,8 @@ import {
   FaCog,
   FaWallet,
   FaTachometerAlt,
-  FaBrain
+  FaBrain,
+  FaPlus
 } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
@@ -42,6 +45,22 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Listen for balance updates
+  useEffect(() => {
+    const handleBalanceUpdate = (event) => {
+      console.log("Balance updated event received:", event.detail);
+      if (event.detail && typeof event.detail.balance === 'number') {
+        setBalance(event.detail.balance);
+      }
+    };
+
+    window.addEventListener('balanceUpdated', handleBalanceUpdate);
+    
+    return () => {
+      window.removeEventListener('balanceUpdated', handleBalanceUpdate);
     };
   }, []);
 
@@ -108,7 +127,6 @@ const Navbar = () => {
   const userEmail = userData?.email || session?.user?.email || "";
   
   // Use image from userData or session
-  // DÜZELTME: profileImage -> image 
   const userImage = userData?.image || session?.user?.image || null;
 
   return (
@@ -247,7 +265,20 @@ const Navbar = () => {
                                   <FaWallet className="text-purple-500 mr-2" />
                                   <p className="text-xs text-gray-500">Balance</p>
                                 </div>
-                                <p className="text-lg font-semibold text-gray-900">${balance}</p>
+                                <div className="flex flex-col ">
+                                  <p className="text-lg font-semibold text-gray-900">
+                                    {typeof balance === 'number' ? `$${balance.toFixed(2)}` : '$0.00'}
+                                  </p>
+                                  <Link
+                                    href="/balance/topup"
+                                    onClick={() => setUserMenuOpen(false)}
+                                    className="text-xs flex items-center text-purple-600 hover:text-purple-700"
+                                  >
+                                    <FaPlus className="" size={10} />
+                                    Add
+                                    
+                                  </Link>
+                                </div>
                               </div>
                               <div className="bg-gray-50 p-3 rounded-lg">
                                 <div className="flex items-center">
@@ -263,7 +294,6 @@ const Navbar = () => {
 
                           {/* Menu items */}
                           <div className="py-1">
-                            
                             <Link 
                               href="/profile" 
                               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -271,6 +301,14 @@ const Navbar = () => {
                             >
                               <FaRegUser className="mr-3 text-gray-400" />
                               Profile Settings
+                            </Link>
+                            <Link 
+                              href="/balance/topup" 
+                              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              onClick={() => setUserMenuOpen(false)}
+                            >
+                              <FaWallet className="mr-3 text-gray-400" />
+                              Top Up Balance
                             </Link>
                             {isSubscribed ? (
                               <Link 
