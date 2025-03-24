@@ -147,7 +147,7 @@ const RequestAccess = () => {
               </button>
             ) : (
               // If not subscribed, link to subscription page
-              <Link href="">
+              <Link href="#pricing">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full blur opacity-70 group-hover:opacity-100 transition duration-300"></div>
                 <button className="relative bg-black px-8 py-4 rounded-full text-white font-medium flex items-center">
                   <FaCrown className="mr-2" />
@@ -160,14 +160,14 @@ const RequestAccess = () => {
             )}
           </motion.div>
 
-          <motion.button
+          <motion.a
             whileHover={{ x: 5 }}
-            onClick={() => scrollToSection("plans")}
+            href="#pricing"
             className="text-white flex items-center font-medium hover:text-purple-300 transition-colors"
           >
-            <span>View All Plans</span>
+            View All Plans
             <FaArrowRight className="ml-2" />
-          </motion.button>
+          </motion.a>
         </motion.div>
 
         {/* Animated scroll indicator */}

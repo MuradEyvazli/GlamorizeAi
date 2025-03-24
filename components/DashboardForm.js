@@ -82,6 +82,44 @@ const DashboardForm = () => {
     }
   };
 
+  // Add download image function
+  const handleDownloadImage = async () => {
+    if (!resultImage) {
+      showNotification('No image to download!', 'error');
+      return;
+    }
+
+    try {
+      const response = await fetch(resultImage);
+      const blob = await response.blob();
+      
+      // Create a temporary URL for the blob
+      const url = window.URL.createObjectURL(blob);
+      
+      // Create a link element
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Set the download filename
+      link.download = 'glamorize-ai-result.jpg';
+      
+      // Append the link to the document body
+      document.body.appendChild(link);
+      
+      // Trigger the download
+      link.click();
+      
+      // Clean up
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      
+      showNotification('Image downloaded successfully!', 'success');
+    } catch (error) {
+      console.error('Download Error:', error);
+      showNotification(`Error downloading image: ${error.message}`, 'error');
+    }
+  };
+
   const handleRunClick = async () => {
     if (!isSubscribed) {
       showNotification('You need an active subscription to use this feature.', 'error');
@@ -721,6 +759,15 @@ const DashboardForm = () => {
                                 className="rounded-lg"
                               />
                               
+                              {/* Download button */}
+                              <button
+                                onClick={handleDownloadImage}
+                                className="absolute top-3 right-3 bg-white/90 text-indigo-600 p-1 rounded-lg w-9 h-9 flex items-center justify-center shadow-md hover:bg-indigo-600 hover:text-white transition-colors"
+                                title="Download Image"
+                              >
+                                ↓
+                              </button>
+                              
                               {/* Decoration for the result */}
                               <div className="absolute inset-0 pointer-events-none">
                                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-fuchsia-200/40 to-violet-200/40 rounded-full blur-xl"></div>
@@ -819,6 +866,15 @@ const DashboardForm = () => {
                                 style={{ objectFit: 'contain' }}
                                 className="rounded-lg"
                               />
+                              
+                              {/* Download button in analysis view too */}
+                              <button
+                                onClick={handleDownloadImage}
+                                className="absolute top-3 right-3 bg-white/90 text-indigo-600 p-1 rounded-lg w-9 h-9 flex items-center justify-center shadow-md hover:bg-indigo-600 hover:text-white transition-colors"
+                                title="Download Image"
+                              >
+                                ↓
+                              </button>
                               
                               {/* Decorative elements for the analysis image */}
                               <div className="absolute inset-0 pointer-events-none">
