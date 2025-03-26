@@ -1,7 +1,7 @@
 [build]
-  command = "npm run build"
+  command = "npm i -D tailwindcss postcss autoprefixer && npm run build"
   publish = ".next"
-
+  
 [build.environment]
   NEXT_DISABLE_SOURCEMAPS = "true"
   NEXT_TELEMETRY_DISABLED = "1"
