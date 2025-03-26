@@ -1,33 +1,21 @@
 /**
  * @type {import('next').NextConfig}
- * Next.js 15 için güncellenmiş konfigürasyon
  */
 const nextConfig = {
-  // React'ın bazı hataları daha sıkı yakalaması için önerilen ayar
   reactStrictMode: true,
   
-  /**
-   * ESLint ayarları - build hatalarını önlemek için
-   */
+  // Build hatalarını görmezden gel
   eslint: {
     ignoreDuringBuilds: true,
   },
-  
-  /**
-   * TypeScript hatalarını görmezden gel (build için)
-   */
   typescript: {
     ignoreBuildErrors: true,
   },
   
-  /**
-   * Build sürecini özelleştirme
-   */
+  // Statik olmayan sayfa çıktısı
   output: 'standalone',
   
-  /**
-   * Harici resim domainlerini yapılandırma
-   */
+  // Harici resim domainleri
   images: {
     domains: [
       'i.pravatar.cc',
@@ -38,12 +26,12 @@ const nextConfig = {
     ]
   },
   
-  /**
-   * Build sürecini özelleştirme - not-found sayfası için
-   */
+  // Server Actions için doğru yapılandırma
   experimental: {
-    // 404 sayfasını SSR olarak işle, statik olarak değil
-    serverActions: true,
+    // serverActions: true yerine
+    serverActions: {
+      allowedOrigins: ['localhost:3000', 'glamorizeai.netlify.app']
+    }
   }
 };
 

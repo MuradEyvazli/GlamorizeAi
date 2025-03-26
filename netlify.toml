@@ -5,20 +5,15 @@
 [build.environment]
   NEXT_DISABLE_SOURCEMAPS = "true"
   NEXT_TELEMETRY_DISABLED = "1"
+  NODE_ENV = "production"
   
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Not-found sayfası için yönlendirme
-[[redirects]]
-  from = "/_not-found"
-  to = "/404.html"
-  status = 302
-  
-# SSR sayfaları için fallback
+# Fallback için basit bir yönlendirme
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/server"
+  to = "/index.html"
   status = 200
   force = false
   conditions = {Path = {match = "\\.(js|css|map|jpg|png|svg|ico)$", inverted = true}}
