@@ -1,19 +1,11 @@
 [build]
-  command = "npm i -D tailwindcss postcss autoprefixer && npm run build"
+  command = "npm run build"
   publish = ".next"
-  
+
 [build.environment]
   NEXT_DISABLE_SOURCEMAPS = "true"
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_ENV = "production"
-  
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Fallback için basit bir yönlendirme
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
-  conditions = {Path = {match = "\\.(js|css|map|jpg|png|svg|ico)$", inverted = true}}
