@@ -50,7 +50,10 @@ const LoginForm = () => {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      await signIn('google', { callbackUrl: '/dashboard' });
+      await signIn('google', { 
+        callbackUrl: '/dashboard',
+        prompt: 'select_account' // Bu, her seferinde hesap seçimini gösterir
+      });
     } catch (error) {
       console.log(error);
       setError("Google sign in failed. Please try again.");
