@@ -16,6 +16,7 @@ import {
   FaMagic
 } from 'react-icons/fa';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
 
 const Subscription = () => {
   const { data: session } = useSession();
@@ -32,12 +33,9 @@ const Subscription = () => {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvc, setCvc] = useState('');
 
-  // Fake kart bilgilerini doldur
   const fillFakeCardDetails = () => {
-    // Stripe test kartı ve rastgele değerler
-    setCardNumber('4242 4242 4242 4242');
+    setCardNumber('3232 3232 3232 3232');
     
-    // Bugünden 2-3 yıl sonrası için rastgele bir son kullanma tarihi
     const currentYear = new Date().getFullYear();
     const randomYear = currentYear + 2 + Math.floor(Math.random() * 2);
     const randomMonth = 1 + Math.floor(Math.random() * 12);
@@ -45,12 +43,15 @@ const Subscription = () => {
     const formattedYear = randomYear.toString().substr(2, 2);
     setExpiryDate(`${formattedMonth}/${formattedYear}`);
     
-    // Rastgele 3 haneli CVC
     const randomCVC = 100 + Math.floor(Math.random() * 900);
     setCvc(randomCVC.toString());
+
+    toast.success('Test card details filled successfully', {
+      icon: '🪄',
+      duration: 3000
+    });
   };
 
-  // Simüle edilmiş plan özellikleri - gerçek veriler API'den gelecek
   const planFeatures = {
     basic: [
       { text: 'AI Outfit Analysis', icon: <FaRocket className="text-blue-400" /> },
@@ -82,7 +83,6 @@ const Subscription = () => {
     return planFeatures.basic;
   };
 
-  // Hangi plan icon'unu göstereceğimizi belirleyen yardımcı fonksiyon
   const getPlanIcon = (planName) => {
     const name = planName?.toLowerCase() || '';
     if (name.includes('basic')) return <FaRocket className="text-blue-400 text-4xl" />;
@@ -101,9 +101,15 @@ const Subscription = () => {
             setSubscription(data);
           } else {
             console.error(data.error);
+            toast.error(`Error: ${data.error}`, {
+              duration: 4000
+            });
           }
         } catch (error) {
           console.error("Error fetching subscription data:", error);
+          toast.error('Failed to load subscription data', {
+            duration: 4000
+          });
         } finally {
           setLoading(false);
         }
@@ -114,7 +120,10 @@ const Subscription = () => {
 
   const handleSubscription = async () => {
     if (!agreed) {
-      alert('Please agree to the terms and conditions');
+      toast.error('Please agree to the terms and conditions', {
+        icon: '🔒',
+        duration: 3000
+      });
       return;
     }
 
@@ -123,6 +132,7 @@ const Subscription = () => {
         setShowConfirmation(true);
       } catch (error) {
         console.error('Error during subscription:', error);
+        toast.error('An error occurred while processing your request');
       }
     }
   };
@@ -139,13 +149,21 @@ const Subscription = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        alert('Subscription successful!');
-        router.push('/dashboard'); // Redirect to user's dashboard
+        toast.success('Subscription successful!', {
+          icon: '✅',
+          duration: 3000
+        });
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 2000);
       } else {
-        alert(data.error || 'Failed to subscribe');
+        toast.error(data.error || 'Failed to subscribe', {
+          duration: 4000
+        });
       }
     } catch (error) {
       console.error('Error during subscription:', error);
+      toast.error('Error processing your subscription');
     } finally {
       setShowConfirmation(false);
     }
@@ -179,8 +197,6 @@ const Subscription = () => {
       </div>
     </div>
   );
-
-  // Determine the features to display based on the plan name
   const features = getPlanFeatures(subscription.name);
   const planColor = subscription.name.toLowerCase().includes('premium') 
     ? 'from-purple-600 to-indigo-600' 
@@ -190,7 +206,7 @@ const Subscription = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
-      {/* Background elements */}
+
       <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full opacity-50 blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-pink-100 to-purple-100 rounded-full opacity-60 blur-3xl"></div>
@@ -209,7 +225,6 @@ const Subscription = () => {
         </motion.button>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-          {/* Left Column - Plan Details */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -269,7 +284,6 @@ const Subscription = () => {
             </div>
           </motion.div>
 
-          {/* Right Column - Payment & Confirmation */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -423,7 +437,6 @@ const Subscription = () => {
         </div>
       </div>
 
-      {/* Confirmation Modal */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <motion.div

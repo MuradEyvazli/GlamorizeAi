@@ -6,9 +6,6 @@ const nextConfig = {
   // React'ın bazı hataları daha sıkı yakalaması için önerilen ayar
   reactStrictMode: true,
   
-  // swcMinify özelliği artık varsayılan olduğu için kaldırıldı
-  // experimental içindeki appDir özelliği artık deneysel olmadığı için kaldırıldı
-  
   /**
    * ESLint ayarları - build hatalarını önlemek için
    */
@@ -21,17 +18,11 @@ const nextConfig = {
    * Harici resim domainlerini yapılandırma
    */
   images: {
-    domains: ['i.pravatar.cc','res.cloudinary.com'] // pravatar.cc görsellerine izin ver
-    
-    // Dilerseniz diğer domain'leri ekleyebilirsiniz
-    // remotePatterns: [
-    //   {
-    //     protocol: 'https',
-    //     hostname: '**.example.com',
-    //     port: '',
-    //     pathname: '/**',
-    //   },
-    // ],
+    domains: [
+      'i.pravatar.cc',
+      'res.cloudinary.com',
+      'lh3.googleusercontent.com'  // Google profil resimleri için eklendi
+    ]
   },
 };
 

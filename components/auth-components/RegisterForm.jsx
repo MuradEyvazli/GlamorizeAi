@@ -59,6 +59,18 @@ const RegisterForm = () => {
     if (passwordStrength === 4) return 'Strong';
   }
 
+  // Handle Google Sign In
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      await signIn('google', { callbackUrl: '/dashboard' });
+    } catch (error) {
+      console.log(error);
+      setError("Google sign in failed. Please try again.");
+      setLoading(false);
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -368,27 +380,14 @@ const RegisterForm = () => {
               <div className="bg-white dark:bg-gray-800 px-3 relative text-sm text-gray-500 dark:text-gray-400">Or sign up with</div>
             </div>
             
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1">
               <button
                 type="button"
+                onClick={handleGoogleSignIn}
                 className="flex justify-center items-center py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
                            hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all"
               >
                 <FaGoogle className="text-red-500" />
-              </button>
-              <button
-                type="button"
-                className="flex justify-center items-center py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
-                           hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all"
-              >
-                <FaFacebook className="text-blue-600" />
-              </button>
-              <button
-                type="button"
-                className="flex justify-center items-center py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
-                           hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all"
-              >
-                <FaApple className="text-gray-900 dark:text-white" />
               </button>
             </div>
           </motion.form>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { 
@@ -15,7 +15,8 @@ import {
   FaWallet,
   FaTachometerAlt,
   FaBrain,
-  FaPlus
+  FaPlus,
+  FaSync
 } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
@@ -31,9 +32,21 @@ const Navbar = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  
+  // Store interval ID and previous values in refs to persist across renders
+  const intervalRef = useRef(null);
+  const prevBalanceRef = useRef(balance);
+  const prevSubscriptionRef = useRef(isSubscribed);
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
-  const toggleUserMenu = () => setUserMenuOpen(!userMenuOpen);
+  const toggleUserMenu = () => {
+    // Refresh data when opening menu to ensure it's up to date
+    if (!userMenuOpen) {
+      fetchUserData(true);
+    }
+    setUserMenuOpen(!userMenuOpen);
+  };
   const toggleNavMenu = () => setNavMenuOpen(!navMenuOpen);
 
   // Handle scroll effects
@@ -48,64 +61,157 @@ const Navbar = () => {
     };
   }, []);
 
-  // Listen for balance updates
+  // Function to fetch user data
+  const fetchUserData = async (force = false) => {
+    if (!session?.user?.email) return;
+    
+    if (force) {
+      // Set refreshing state for UI feedback
+      setIsRefreshing(true);
+    }
+
+    try {
+      // Generate a unique cache-busting parameter
+      const timestamp = Date.now();
+      
+      // Fetch profile data
+      const profileRes = await fetch('/api/profile/get-profile', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        cache: 'no-store'
+      });
+      
+      if (profileRes.ok) {
+        const profileData = await profileRes.json();
+        console.log("✅ Profile data loaded:", profileData);
+        setUserData(profileData);
+      }
+
+      // Fetch balance - use direct URL with nocache parameter
+      const balanceRes = await fetch(`/api/user/balance?email=${session.user.email}&nocache=${timestamp}`, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        cache: 'no-store'
+      });
+      
+      if (balanceRes.ok) {
+        const balanceData = await balanceRes.json();
+        console.log("💰 Balance data loaded:", balanceData.balance);
+        
+        // Only update if the value actually changed
+        if (balanceData.balance !== prevBalanceRef.current) {
+          console.log(`Balance updated from ${prevBalanceRef.current} to ${balanceData.balance}`);
+          setBalance(balanceData.balance);
+          prevBalanceRef.current = balanceData.balance;
+        }
+      }
+
+      // Fetch subscription status with similar cache-busting approach
+      const subRes = await fetch(`/api/user/subscription-status?email=${session.user.email}&nocache=${timestamp}`, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        cache: 'no-store'
+      });
+      
+      if (subRes.ok) {
+        const subData = await subRes.json();
+        console.log("👑 Subscription data loaded:", subData.subscriptionStatus);
+        
+        // Only update if the value actually changed
+        if (subData.subscriptionStatus !== prevSubscriptionRef.current) {
+          console.log(`Subscription updated from ${prevSubscriptionRef.current} to ${subData.subscriptionStatus}`);
+          setIsSubscribed(subData.subscriptionStatus);
+          prevSubscriptionRef.current = subData.subscriptionStatus;
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error fetching user data:', error);
+    } finally {
+      if (force) {
+        setIsRefreshing(false);
+      }
+    }
+  };
+
+  // Initial data load and setup polling
+  useEffect(() => {
+    if (status === 'authenticated') {
+      // Load data immediately
+      fetchUserData();
+      
+      // Set up aggressive polling (every 5 seconds)
+      intervalRef.current = setInterval(() => {
+        fetchUserData();
+      }, 5000);
+    }
+    
+    return () => {
+      // Clean up interval on unmount
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [session, status]);
+
+  // Listen for balance and subscription update events
   useEffect(() => {
     const handleBalanceUpdate = (event) => {
-      console.log("Balance updated event received:", event.detail);
+      console.log("🔄 Balance update event received:", event.detail);
       if (event.detail && typeof event.detail.balance === 'number') {
+        console.log(`Setting balance from ${balance} to ${event.detail.balance}`);
         setBalance(event.detail.balance);
+        prevBalanceRef.current = event.detail.balance;
+        
+        // Trigger immediate data refresh to ensure everything is in sync
+        fetchUserData(true);
       }
+    };
+
+    const handleSubscriptionUpdate = (event) => {
+      console.log("🔄 Subscription update event received:", event.detail);
+      if (event.detail && typeof event.detail.subscriptionStatus === 'boolean') {
+        console.log(`Setting subscription from ${isSubscribed} to ${event.detail.subscriptionStatus}`);
+        setIsSubscribed(event.detail.subscriptionStatus);
+        prevSubscriptionRef.current = event.detail.subscriptionStatus;
+        
+        // Trigger immediate data refresh to ensure everything is in sync
+        fetchUserData(true);
+      }
+    };
+
+    // Listen to url changes for immediate refresh
+    const handleRouteChange = () => {
+      console.log("📍 Route changed, refreshing data");
+      fetchUserData(true);
     };
 
     window.addEventListener('balanceUpdated', handleBalanceUpdate);
+    window.addEventListener('subscriptionUpdated', handleSubscriptionUpdate);
+    window.addEventListener('popstate', handleRouteChange);
     
     return () => {
       window.removeEventListener('balanceUpdated', handleBalanceUpdate);
+      window.removeEventListener('subscriptionUpdated', handleSubscriptionUpdate);
+      window.removeEventListener('popstate', handleRouteChange);
     };
-  }, []);
+  }, [balance, isSubscribed]);
 
-  // Fetch user data
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!session?.user?.email) return;
-
-      try {
-        // Fetch user profile data first
-        const profileRes = await fetch('/api/profile/get-profile', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        
-        if (profileRes.ok) {
-          const profileData = await profileRes.json();
-          console.log("Loaded profile data:", profileData); // Debugging log
-          setUserData(profileData);
-        }
-
-        // Fetch balance
-        const balanceRes = await fetch(`/api/user/balance?email=${session.user.email}`);
-        const balanceData = await balanceRes.json();
-        if (balanceRes.ok) {
-          setBalance(balanceData.balance);
-        }
-
-        // Fetch subscription status
-        const subRes = await fetch(`/api/user/subscription-status?email=${session.user.email}`);
-        const subData = await subRes.json();
-        if (subRes.ok) {
-          setIsSubscribed(subData.subscriptionStatus);
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    if (status === 'authenticated') {
-      fetchData();
-    }
-  }, [session, status]);
+  // Manually trigger refresh
+  const handleRefresh = (e) => {
+    e.stopPropagation();
+    fetchUserData(true);
+  };
 
   // Handle logout with proper redirect
   const handleLogout = () => {
@@ -178,6 +284,20 @@ const Navbar = () => {
               >
                 <FaBrain className="text-lg" />
               </button>
+              
+              {/* Refresh button */}
+              {session && (
+                <button
+                  onClick={handleRefresh}
+                  className={`p-2 rounded-full transition-all ${isRefreshing 
+                    ? 'animate-spin text-purple-600' 
+                    : 'text-gray-500 hover:text-purple-600 hover:bg-purple-50'}`}
+                  aria-label="Refresh data"
+                  disabled={isRefreshing}
+                >
+                  <FaSync className="text-lg" />
+                </button>
+              )}
               
               {/* User section - only show when logged in */}
               {session ? (
@@ -260,7 +380,7 @@ const Navbar = () => {
                           {/* Account details */}
                           <div className="px-4 py-3">
                             <div className="grid grid-cols-2 gap-3">
-                              <div className="bg-gray-50 p-3 rounded-lg">
+                              <div className="bg-gray-50 p-3 rounded-lg relative group">
                                 <div className="flex items-center">
                                   <FaWallet className="text-purple-500 mr-2" />
                                   <p className="text-xs text-gray-500">Balance</p>
@@ -276,11 +396,20 @@ const Navbar = () => {
                                   >
                                     <FaPlus className="" size={10} />
                                     Add
-                                    
                                   </Link>
                                 </div>
+                                {/* Visual indicator for fresh data */}
+                                <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <button 
+                                    onClick={handleRefresh} 
+                                    className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center hover:bg-purple-200"
+                                    title="Refresh balance"
+                                  >
+                                    <FaSync className="text-purple-600 text-xs" />
+                                  </button>
+                                </div>
                               </div>
-                              <div className="bg-gray-50 p-3 rounded-lg">
+                              <div className="bg-gray-50 p-3 rounded-lg relative group">
                                 <div className="flex items-center">
                                   <FaCrown className={`mr-2 ${isSubscribed ? 'text-amber-500' : 'text-gray-400'}`} />
                                   <p className="text-xs text-gray-500">Status</p>
@@ -288,6 +417,16 @@ const Navbar = () => {
                                 <p className={`text-sm font-semibold ${isSubscribed ? 'text-amber-500' : 'text-gray-500'}`}>
                                   {isSubscribed ? "Premium" : "Free Plan"}
                                 </p>
+                                {/* Visual indicator for fresh data */}
+                                <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <button 
+                                    onClick={handleRefresh} 
+                                    className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center hover:bg-purple-200"
+                                    title="Refresh subscription status"
+                                  >
+                                    <FaSync className="text-purple-600 text-xs" />
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>

@@ -46,6 +46,18 @@ const LoginForm = () => {
     }
   }
   
+  // Handle Google Sign In
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      await signIn('google', { callbackUrl: '/dashboard' });
+    } catch (error) {
+      console.log(error);
+      setError("Google sign in failed. Please try again.");
+      setLoading(false);
+    }
+  }
+  
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -190,12 +202,7 @@ const LoginForm = () => {
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Password
                 </label>
-                <Link 
-                  href="/forgot-password" 
-                  className="text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-                >
-                  Forgot Password?
-                </Link>
+                
               </div>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -249,27 +256,14 @@ const LoginForm = () => {
               <div className="bg-white dark:bg-gray-800 px-3 relative text-sm text-gray-500 dark:text-gray-400">Or continue with</div>
             </div>
             
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1">
               <button
                 type="button"
+                onClick={handleGoogleSignIn}
                 className="flex justify-center items-center py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
                            hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all"
               >
                 <FaGoogle className="text-red-500" />
-              </button>
-              <button
-                type="button"
-                className="flex justify-center items-center py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
-                           hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all"
-              >
-                <FaFacebook className="text-blue-600" />
-              </button>
-              <button
-                type="button"
-                className="flex justify-center items-center py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
-                           hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all"
-              >
-                <FaApple className="text-gray-900 dark:text-white" />
               </button>
             </div>
           </motion.form>

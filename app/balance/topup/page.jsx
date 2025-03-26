@@ -36,6 +36,8 @@ const BalanceTopup = () => {
   const [isValidating, setIsValidating] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
+  const [remainingRequests, setRemainingRequests] = useState(0);
+  const [subscriptionType, setSubscriptionType] = useState('Free Plan');
 
   // Redirect if not logged in
   useEffect(() => {
@@ -69,6 +71,22 @@ const BalanceTopup = () => {
         if (profileRes.ok) {
           const data = await profileRes.json();
           setProfileData(data);
+        }
+        
+        // Fetch user data including remaining requests and subscription info
+        if (session?.user?.id) {
+          const userDataRes = await fetch(`/api/user/${session.user.id}`);
+          const userData = await userDataRes.json();
+          
+          // Update remaining requests with actual value
+          setRemainingRequests(userData.remainingRequests || 0);
+          
+          // Set subscription type based on status
+          if (userData.subscriptionStatus) {
+            setSubscriptionType('Premium');
+          } else {
+            setSubscriptionType('Free Plan');
+          }
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -293,10 +311,10 @@ const BalanceTopup = () => {
                     <div className="flex items-center justify-between py-3 border-b border-gray-100">
                       <div className="flex items-center text-gray-600">
                         <FaCalendarAlt className="mr-3 text-purple-500" />
-                        <span className="text-sm">Member Since</span>
+                        <span className="text-sm">Membership Type</span>
                       </div>
                       <span className="text-sm font-medium text-gray-800">
-                        {formatDate(profileData?.createdAt) || 'N/A'}
+                        {subscriptionType}
                       </span>
                     </div>
                     
@@ -316,7 +334,7 @@ const BalanceTopup = () => {
                         <span className="text-sm">AI Requests Left</span>
                       </div>
                       <span className="text-sm font-medium text-gray-800">
-                        {profileData?.remainingRequests || 'Unlimited'}
+                        {remainingRequests}
                       </span>
                     </div>
                   </div>

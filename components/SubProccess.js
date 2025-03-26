@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaCheckCircle, FaTimesCircle, FaCrown, FaRocket, FaGem, FaRegCreditCard, FaArrowRight, FaChevronDown, FaChevronUp, FaImages } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 const SubProcess = () => {
   const { data: session } = useSession();
@@ -15,26 +16,25 @@ const SubProcess = () => {
   const [highlightedPlan, setHighlightedPlan] = useState(null);
   const [remainingRequests, setRemainingRequests] = useState(0);
 
-  // Planlar için özelliklerin güncellenmesi - istek sayıları eklenmiş hali
   const planFeatures = {
     basic: [
       'AI Outfit Analysis', 
       'Basic Style Recommendations', 
       '10 Virtual Try-ons per month',
-      '10 AI Image Requests per month', // Yeni eklenen özellik
+      '10 AI Image Requests per month',
       'Community Access'
     ],
     premium: [
       'Everything in Basic', 
       'Unlimited Virtual Try-ons', 
-      '25 AI Image Requests per month', // Yeni eklenen özellik
+      '25 AI Image Requests per month',
       'Advanced Style Analysis', 
       'Personalized Recommendations', 
       'Priority Support'
     ],
     professional: [
       'Everything in Premium', 
-      '50 AI Image Requests per month', // Yeni eklenen özellik
+      '50 AI Image Requests per month',
       'API Access', 
       'White Label Integration', 
       'Dedicated Account Manager', 
@@ -61,10 +61,12 @@ const SubProcess = () => {
 
       if (!userResponse.ok) {
         console.error('Error fetching user data:', userData.error);
+        toast.error(`Error loading user data: ${userData.error}`, {
+          duration: 4000
+        });
         return;
       }
 
-      // Kalan istek sayısını ayarla
       if (userData.remainingRequests !== undefined) {
         setRemainingRequests(userData.remainingRequests);
       }
@@ -73,7 +75,12 @@ const SubProcess = () => {
         const subResponse = await fetch(`/api/single-sub/${userData.subscriptionId}`);
         const subscribedPlan = await subResponse.json();
         if (subResponse.ok) setUserSubscription(subscribedPlan);
-        else console.error('Error fetching subscribed plan:', subscribedPlan.error);
+        else {
+          console.error('Error fetching subscribed plan:', subscribedPlan.error);
+          toast.error(`Error loading subscription: ${subscribedPlan.error}`, {
+            duration: 4000
+          });
+        }
       } else {
         const allSubResponse = await fetch('/api/all-sub');
         const allSubscriptions = await allSubResponse.json();
@@ -84,10 +91,18 @@ const SubProcess = () => {
             setHighlightedPlan(allSubscriptions[1]?._id || allSubscriptions[0]?._id);
           }
         }
-        else console.error('Error fetching subscriptions:', allSubscriptions.error);
+        else {
+          console.error('Error fetching subscriptions:', allSubscriptions.error);
+          toast.error(`Error loading plans: ${allSubscriptions.error}`, {
+            duration: 4000
+          });
+        }
       }
     } catch (error) {
       console.error('Error fetching subscriptions:', error);
+      toast.error('Failed to load subscription data', {
+        duration: 4000
+      });
     } finally {
       setLoading(false);
     }
@@ -108,14 +123,25 @@ const SubProcess = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Subscription canceled successfully.');
+        // Replace alert with toast
+        toast.success('Subscription canceled successfully', {
+          icon: '✅',
+          duration: 3000
+        });
         setUserSubscription(null);
         await fetchSubscriptions();
       } else {
         console.error('Error cancelling subscription:', data.error);
+        toast.error(`Error: ${data.error || 'Failed to cancel subscription'}`, {
+          icon: '❌',
+          duration: 4000
+        });
       }
     } catch (error) {
       console.error('Error cancelling subscription:', error);
+      toast.error('An error occurred while cancelling your subscription', {
+        duration: 4000
+      });
     } finally {
       setShowConfirmModal(false);
     }
@@ -159,7 +185,7 @@ const SubProcess = () => {
       <div className="flex items-center justify-center min-h-[50vh]">
         <div className="relative">
           <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-          <div className="w-12 h-12 absolute top-2 left-2 border-4 border-blue-200 border-b-blue-600 rounded-full animate-spin-slow"></div>
+          
         </div>
       </div>
     );
