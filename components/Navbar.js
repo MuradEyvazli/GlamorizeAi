@@ -214,7 +214,7 @@ const Navbar = () => {
   };
 
   // Handle logout with proper redirect
-  const handleLogout = () => {
+   const handleLogout = () => {
     setUserMenuOpen(false);
     const currentOrigin = window.location.origin;
     signOut({ callbackUrl: currentOrigin });

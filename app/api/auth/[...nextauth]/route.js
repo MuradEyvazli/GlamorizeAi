@@ -14,7 +14,9 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
-          prompt: "select_account" // Bu, her seferinde hesap seçimini gösterir
+          prompt: "select_account",
+          access_type: "offline",
+          response_type: "code"
         }
       }
     }),
@@ -56,6 +58,7 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account.provider === 'google') {
+        console.log("Google sign in detected: ",profile.email);
         try {
           await connectDB();
           

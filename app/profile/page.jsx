@@ -180,7 +180,7 @@ const ProfileSettings = () => {
         
         // Sign out after email change to force new login with updated email
         setTimeout(() => {
-          signOut({ callbackUrl: '/' });
+          signOut({ callbackUrl: '/', redirect: true });
         }, 3000);
       } else {
         // Regular success notification for non-email changes
