@@ -3,23 +3,11 @@
 import connectDB from '@/lib/db';
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 import bcrypt from 'bcryptjs';
 import User from "@/models/user";
 
 export const authOptions = {
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: {
-        params: {
-          prompt: "select_account",
-          access_type: "offline",
-          response_type: "code"
-        }
-      }
-    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -56,68 +44,11 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      if (account.provider === 'google') {
-        console.log("Google sign in detected: ",profile.email);
-        try {
-          await connectDB();
-          
-          // Check if user already exists
-          const existingUser = await User.findOne({ email: profile.email });
-          
-          if (existingUser) {
-            // Update last login time
-            existingUser.lastLogin = new Date();
-            await existingUser.save();
-            
-            user.id = existingUser._id.toString();
-            user.role = existingUser.role;
-            return true;
-          } else {
-            // Create new user with Google info
-            const newUser = await User.create({
-              name: profile.name,
-              email: profile.email,
-              // Create a random secure password since Google users don't need one
-              password: await bcrypt.hash(Math.random().toString(36).slice(-8) + Date.now().toString(), 10),
-              image: profile.picture || '/default-avatar.png',
-              lastLogin: new Date()
-            });
-            
-            user.id = newUser._id.toString();
-            user.role = newUser.role;
-            return true;
-          }
-        } catch (error) {
-          console.error("Error during Google sign in:", error);
-          return false;
-        }
-      }
-      return true;
-    },
-    
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user }) {
       // Initial sign in
       if (user) {
         token.id = user.id;
         token.role = user.role;
-        
-        // If it's a Google login, we need to enhance the token with our database user data
-        if (account?.provider === 'google') {
-          try {
-            await connectDB();
-            const dbUser = await User.findOne({ email: profile.email });
-            if (dbUser) {
-              token.id = dbUser._id.toString();
-              token.role = dbUser.role;
-              token.subscriptionStatus = dbUser.subscriptionStatus;
-              token.balance = dbUser.balance;
-              token.remainingRequests = dbUser.remainingRequests;
-            }
-          } catch (error) {
-            console.error("Error fetching user data for token:", error);
-          }
-        }
       }
       return token;
     },

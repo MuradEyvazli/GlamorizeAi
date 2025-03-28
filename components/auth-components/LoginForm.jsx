@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { FaEnvelope, FaLock, FaGoogle, FaFacebook, FaApple } from 'react-icons/fa'
+import { FaEnvelope, FaLock } from 'react-icons/fa'
 
 const LoginForm = () => {
   const [email, setEmail] = useState('')
@@ -42,21 +42,6 @@ const LoginForm = () => {
     } catch (error) {
       console.log(error);
       setError("An unexpected error occurred. Please try again.");
-      setLoading(false);
-    }
-  }
-  
-  // Handle Google Sign In
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      await signIn('google', { 
-        callbackUrl: '/dashboard',
-        prompt: 'select_account' // Bu, her seferinde hesap seçimini gösterir
-      });
-    } catch (error) {
-      console.log(error);
-      setError("Google sign in failed. Please try again.");
       setLoading(false);
     }
   }
@@ -251,22 +236,6 @@ const LoginForm = () => {
                     Signing in...
                   </>
                 ) : 'Sign in'}
-              </button>
-            </div>
-            
-            <div className="relative flex items-center justify-center mt-4">
-              <div className="border-t border-gray-300 dark:border-gray-700 absolute w-full"></div>
-              <div className="bg-white dark:bg-gray-800 px-3 relative text-sm text-gray-500 dark:text-gray-400">Or continue with</div>
-            </div>
-            
-            <div className="grid grid-cols-1">
-              <button
-                type="button"
-                onClick={handleGoogleSignIn}
-                className="flex justify-center items-center py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
-                           hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all"
-              >
-                <FaGoogle className="text-red-500" />
               </button>
             </div>
           </motion.form>

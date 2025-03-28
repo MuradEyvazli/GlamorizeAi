@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { FaUser, FaEnvelope, FaLock, FaGoogle, FaFacebook, FaApple, FaCheck } from 'react-icons/fa'
+import { FaUser, FaEnvelope, FaLock, FaCheck } from 'react-icons/fa'
 
 const RegisterForm = () => {
   const [name, setName] = useState('')
@@ -57,18 +57,6 @@ const RegisterForm = () => {
     if (passwordStrength === 2) return 'Fair';
     if (passwordStrength === 3) return 'Good';
     if (passwordStrength === 4) return 'Strong';
-  }
-
-  // Handle Google Sign In
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      await signIn('google', { callbackUrl: '/dashboard' });
-    } catch (error) {
-      console.log(error);
-      setError("Google sign in failed. Please try again.");
-      setLoading(false);
-    }
   }
 
   const handleSubmit = async (e) => {
@@ -372,22 +360,6 @@ const RegisterForm = () => {
                     Creating account...
                   </>
                 ) : 'Create Account'}
-              </button>
-            </div>
-            
-            <div className="relative flex items-center justify-center mt-4">
-              <div className="border-t border-gray-300 dark:border-gray-700 absolute w-full"></div>
-              <div className="bg-white dark:bg-gray-800 px-3 relative text-sm text-gray-500 dark:text-gray-400">Or sign up with</div>
-            </div>
-            
-            <div className="grid grid-cols-1">
-              <button
-                type="button"
-                onClick={handleGoogleSignIn}
-                className="flex justify-center items-center py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
-                           hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all"
-              >
-                <FaGoogle className="text-red-500" />
               </button>
             </div>
           </motion.form>
